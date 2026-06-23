@@ -186,7 +186,7 @@
   }
 
   /* ============================ AUDIO (generado, off por defecto) ============================ */
-  var actx = null, master = null, ambientGain = null, blipGain = null, soundOn = false;
+  var actx = null, master = null, soundOn = false;
   function initAudio() {
     if (actx) return;
     var AC = window.AudioContext || window.webkitAudioContext;
@@ -195,20 +195,16 @@
     master = actx.createGain();
     master.gain.value = 0;
     master.connect(actx.destination);
-    // ── Ambiente: mismo drone (La/Mi) extendido a octavas medias, audibles en parlante de celular ──
-    ambientGain = actx.createGain(); ambientGain.gain.value = 0.5; ambientGain.connect(master);
-    var lp = actx.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 1500; lp.connect(ambientGain);
-    [[82.4, 0.16], [110, 0.16], [164.8, 0.15], [220, 0.15], [329.6, 0.14], [440, 0.12]].forEach(function (n, i) {
-      var o = actx.createOscillator(); o.type = "triangle"; o.frequency.value = n[0];
-      o.detune.value = (i - 2.5) * 3;            // micro-detune: el pad "respira"
-      var g = actx.createGain(); g.gain.value = n[1];
+    var pad = actx.createGain(); pad.gain.value = 1.0; pad.connect(master);
+    var lp = actx.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 520; lp.connect(pad);
+    [82.4, 110, 164.8].forEach(function (f, i) {
+      var o = actx.createOscillator(); o.type = "sine"; o.frequency.value = f;
+      var g = actx.createGain(); g.gain.value = i === 0 ? 0.5 : 0.28;
       o.connect(g); g.connect(lp); o.start();
     });
-    var lfo = actx.createOscillator(); lfo.frequency.value = 0.06;
-    var lfg = actx.createGain(); lfg.gain.value = 350;
+    var lfo = actx.createOscillator(); lfo.frequency.value = 0.07;
+    var lfg = actx.createGain(); lfg.gain.value = 90;
     lfo.connect(lfg); lfg.connect(lp.frequency); lfo.start();
-    // ── Bus separado para los blips de interacción ──
-    blipGain = actx.createGain(); blipGain.gain.value = 0.55; blipGain.connect(master);
   }
   function toggleSound() {
     initAudio();
@@ -217,7 +213,7 @@
     soundOn = !soundOn;
     var t = actx.currentTime;
     master.gain.cancelScheduledValues(t);
-    master.gain.linearRampToValueAtTime(soundOn ? 0.85 : 0, t + 0.6);
+    master.gain.linearRampToValueAtTime(soundOn ? 0.18 : 0, t + 0.6);
     updateSoundUI();
   }
   function blip(freq) {
@@ -225,8 +221,8 @@
     var t = actx.currentTime;
     var o = actx.createOscillator(); o.type = "sine"; o.frequency.value = freq;
     var g = actx.createGain(); g.gain.value = 0;
-    o.connect(g); g.connect(blipGain);
-    g.gain.linearRampToValueAtTime(1.0, t + 0.015);
+    o.connect(g); g.connect(master);
+    g.gain.linearRampToValueAtTime(1.35, t + 0.015);
     g.gain.exponentialRampToValueAtTime(0.0008, t + 0.45);
     o.start(t); o.stop(t + 0.46);
   }
