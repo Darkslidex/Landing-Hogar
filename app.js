@@ -175,6 +175,7 @@
         hero.classList.remove("is-aire", "is-elec", "is-refac");
         hero.classList.add(d.state);
         showMobile(d, z.getAttribute("href"));
+        blip(d.freq);                           // feedback sonoro al tocar (si el sonido está activo)
       });
     });
     var biblio = document.querySelector(".biblio-hot");
@@ -212,7 +213,7 @@
     soundOn = !soundOn;
     var t = actx.currentTime;
     master.gain.cancelScheduledValues(t);
-    master.gain.linearRampToValueAtTime(soundOn ? 0.05 : 0, t + 0.6);
+    master.gain.linearRampToValueAtTime(soundOn ? 0.18 : 0, t + 0.6);
     updateSoundUI();
   }
   function blip(freq) {
@@ -221,8 +222,8 @@
     var o = actx.createOscillator(); o.type = "sine"; o.frequency.value = freq;
     var g = actx.createGain(); g.gain.value = 0;
     o.connect(g); g.connect(master);
-    g.gain.linearRampToValueAtTime(0.6, t + 0.015);
-    g.gain.exponentialRampToValueAtTime(0.0008, t + 0.42);
+    g.gain.linearRampToValueAtTime(0.9, t + 0.015);
+    g.gain.exponentialRampToValueAtTime(0.0008, t + 0.45);
     o.start(t); o.stop(t + 0.46);
   }
   var ICON_ON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 9v6h4l5 4V5L8 9H4z" stroke="#25E0D0" stroke-width="1.7" stroke-linejoin="round"/><path d="M16 9c1 1 1 5 0 6M18.5 7c2 2 2 8 0 10" stroke="#25E0D0" stroke-width="1.7" stroke-linecap="round"/></svg>';
@@ -283,6 +284,12 @@
       else if (a === "menu-close") setMenu(false);
     });
     window.addEventListener("keydown", function (e) { if (e.key === "Escape") setMenu(false); });
+    // Pausar el audio cuando la pestaña pasa a segundo plano; reanudar al volver (si estaba activo)
+    document.addEventListener("visibilitychange", function () {
+      if (!actx) return;
+      if (document.hidden) { if (actx.state === "running") actx.suspend(); }
+      else if (soundOn && actx.state === "suspended") actx.resume();
+    });
 
     initReveal();
     initCounters();
