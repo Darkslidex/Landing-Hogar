@@ -249,7 +249,14 @@
       try {
         fetch(API + "/api/leads", {
           method: "POST", headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ nombre: nombre, whatsapp: digits, motivo: (C.servicio || "Consulta") + " — " + answersLines().replace(/\n/g, " / "), website: hp })
+          body: JSON.stringify({
+            cliente_id: C.clienteId || "hogar",
+            nombre: nombre,
+            whatsapp: digits,
+            motivo: ((C.servicio || "Consulta") + " — " + answersLines().replace(/\n/g, " / ")).slice(0, 300),
+            fuente_url: location.href,
+            hp: hp
+          })
         }).catch(function () {});
       } catch (e) {}
       renderSent(nombre);

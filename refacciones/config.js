@@ -4,6 +4,7 @@ window.TC_CONFIG = {
   accentInk: "#9E4427",
   wa: "5491178298512",
   servicio: "Refacciones",
+  clienteId: "hogar-refacciones",
   waGeneric: "Hola TechCam Hogar 👋 Quiero un presupuesto de refacciones para mi casa.",
   waQuizIntro: "Hola TechCam Hogar 👋 Quiero un presupuesto de refacciones.",
   fx: { streak: "198,93,59", dot: "224,135,106" },

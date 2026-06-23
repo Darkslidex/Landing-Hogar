@@ -4,6 +4,7 @@ window.TC_CONFIG = {
   accentInk: "#0FB9AC",
   wa: "5491178298512",
   servicio: "Aire acondicionado",
+  clienteId: "hogar-aire",
   waGeneric: "Hola TechCam Hogar 👋 Quiero un presupuesto de aire acondicionado.",
   waQuizIntro: "Hola TechCam Hogar 👋 Quiero un presupuesto de aire acondicionado.",
   fx: { streak: "37,224,208", dot: "160,232,226" },
