@@ -123,21 +123,59 @@
       board.style.opacity = "0";
       board.style.transform = "translateX(-10px)";
     }
+    var isMobile = function () { return !!(window.matchMedia && window.matchMedia("(max-width: 879px)").matches); };
+
+    // Cartel mobile: aparece bajo la casa al tocar una zona y queda fijo hasta tocar otra.
+    var mb = null;
+    function mboard() {
+      if (mb) return mb;
+      var inner = (scene && scene.parentNode) || document.body;
+      mb = document.createElement("div");
+      mb.id = "pf-mboard";
+      mb.style.cssText = "display:none;margin-top:14px;background:linear-gradient(180deg,rgba(13,21,23,.97),rgba(8,12,13,.98));border:1px solid rgba(37,224,208,.32);border-radius:16px;padding:18px 18px 20px;box-shadow:0 24px 60px -22px rgba(0,0,0,.7)";
+      mb.innerHTML =
+        '<div style="display:flex;align-items:center;gap:9px;margin-bottom:9px"><span data-mb-dot style="width:9px;height:9px;border-radius:50%;background:#25E0D0;box-shadow:0 0 9px #25E0D0;flex:none"></span><span data-mb-kicker style="font-family:\'Space Mono\',monospace;font-weight:700;font-size:12.5px;letter-spacing:.12em;color:#9fb0b1;text-transform:uppercase"></span></div>'
+        + '<div data-mb-title style="font-family:\'Archivo\',sans-serif;font-weight:800;font-size:24px;letter-spacing:-.02em;color:#fff;line-height:1.1;margin-bottom:7px"></div>'
+        + '<div data-mb-sub style="font-size:16px;color:#c7d6f0;line-height:1.45;margin-bottom:17px"></div>'
+        + '<a data-mb-cta href="#" style="display:flex;align-items:center;justify-content:center;gap:9px;background:#25E0D0;color:#04100E;font-family:\'Archivo\',sans-serif;font-weight:800;font-size:16.5px;padding:15px;border-radius:12px;text-decoration:none">Ingresar <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#04100E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>';
+      inner.appendChild(mb);
+      return mb;
+    }
+    function showMobile(d, url) {
+      var m = mboard();
+      var dot = m.querySelector("[data-mb-dot]"); dot.style.background = d.color; dot.style.boxShadow = "0 0 9px " + d.color;
+      m.querySelector("[data-mb-kicker]").textContent = d.kicker;
+      m.querySelector("[data-mb-title]").textContent = d.title;
+      m.querySelector("[data-mb-sub]").textContent = d.sub;
+      var cta = m.querySelector("[data-mb-cta]"); cta.style.background = d.color; cta.setAttribute("href", url);
+      m.style.borderColor = d.color + "55";
+      m.style.display = "block";
+      if (m.scrollIntoView) m.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+
     Object.keys(Z).forEach(function (cls) {
       var z = document.querySelector("." + cls);
       if (!z) return;
       var d = Z[cls];
       var on = function () {
+        if (isMobile()) return;                 // en mobile no usamos el board de hover
         hero.classList.remove("is-aire", "is-elec", "is-refac");
         hero.classList.add(d.state);
         showService(d);
         blip(d.freq);
       };
-      var off = function () { hero.classList.remove(d.state); showDefault(); };
+      var off = function () { if (isMobile()) return; hero.classList.remove(d.state); showDefault(); };
       z.addEventListener("mouseenter", on);
       z.addEventListener("mouseleave", off);
       z.addEventListener("focusin", on);
       z.addEventListener("focusout", off);
+      z.addEventListener("click", function (e) {
+        if (!isMobile()) return;                // desktop: el link navega normal
+        e.preventDefault();                     // mobile: no navega; muestra el cartel fijo
+        hero.classList.remove("is-aire", "is-elec", "is-refac");
+        hero.classList.add(d.state);
+        showMobile(d, z.getAttribute("href"));
+      });
     });
     var biblio = document.querySelector(".biblio-hot");
     if (biblio) {
