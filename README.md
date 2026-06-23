@@ -48,12 +48,15 @@ python3 -m http.server 8099   # http://localhost:8099
 - [x] Portal + 3 landings recreados como estático puro y verificados en headless (0 errores de consola, CSP enforced, mobile + desktop).
 - [x] Cotizadores conectados a `POST /api/leads` (+ honeypot) y `wa.me` (probado con backend mockeado).
 
-## Pendientes (deploy)
+## Deploy (EN PRODUCCIÓN ✅)
 
-- [ ] Crear repo `Darkslidex/Landing-Hogar` + push.
-- [ ] App Coolify (Dockerfile) en `hogar.techcam.com.ar` + DNS A naranja → 23.94.236.166.
-- [ ] Agregar `https://hogar.techcam.com.ar` a `ALLOWED_ORIGINS` del backend y reiniciar.
-- [ ] Prueba end-to-end real (form → email a info@techcam.com.ar + lead registrado).
+- **Repo:** `Darkslidex/Landing-Hogar` (público; servible por Coolify sin credenciales).
+- **Coolify app UUID:** `ghwpa7t7b9eb1lclcv5f1cq2` · Build Pack: Dockerfile · puerto `${PORT:-80}` (Coolify inyecta 3000).
+- **Dominios:** https://hogar.techcam.com.ar + `/aire/` `/electricidad/` `/refacciones/` (HTTP 200, SSL Let's Encrypt, Cloudflare proxy).
+- **ALLOWED_ORIGINS** del backend: se agregó `https://hogar.techcam.com.ar` (sin wildcard). `.env` con backup; contenedor `backend-leads` recreado.
+- **Contrato de leads** (verificado contra el backend real): `POST /api/leads` con
+  `{ cliente_id, nombre, whatsapp, motivo, fuente_url, hp }`. `cliente_id` = `hogar-aire` / `hogar-electricidad` / `hogar-refacciones`. `vertical` → default `otro`. Honeypot = `hp`. Email de aviso → `info@techcam.com.ar` (NOTIFY_EMAIL del backend).
+- **Verificado:** 0 errores de consola (4 páginas × desktop/mobile), CSP + headers, cotizador end-to-end (200 `success:true`, lead registrado + email).
 
 ## Pendientes (contenido — revisar antes de promocionar)
 
