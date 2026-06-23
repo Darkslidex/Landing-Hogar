@@ -13,5 +13,5 @@ COPY refacciones/ /usr/share/nginx/html/refacciones/
 
 EXPOSE 80
 
-HEALTHCHECK --interval=30s --timeout=3s --retries=3 \
-  CMD wget -q -O /dev/null http://127.0.0.1/ || exit 1
+# Coolify/Nixpacks inyectan PORT (ej. 3000). nginx se adapta a ${PORT:-80}.
+CMD ["/bin/sh", "-c", "sed -i \"s/listen 80;/listen ${PORT:-80};/\" /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon off;'"]
