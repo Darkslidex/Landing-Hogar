@@ -195,7 +195,7 @@
     master = actx.createGain();
     master.gain.value = 0;
     master.connect(actx.destination);
-    var pad = actx.createGain(); pad.gain.value = 0.5; pad.connect(master);
+    var pad = actx.createGain(); pad.gain.value = 1.0; pad.connect(master);
     var lp = actx.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 520; lp.connect(pad);
     [82.4, 110, 164.8].forEach(function (f, i) {
       var o = actx.createOscillator(); o.type = "sine"; o.frequency.value = f;
@@ -222,7 +222,7 @@
     var o = actx.createOscillator(); o.type = "sine"; o.frequency.value = freq;
     var g = actx.createGain(); g.gain.value = 0;
     o.connect(g); g.connect(master);
-    g.gain.linearRampToValueAtTime(0.9, t + 0.015);
+    g.gain.linearRampToValueAtTime(1.35, t + 0.015);
     g.gain.exponentialRampToValueAtTime(0.0008, t + 0.45);
     o.start(t); o.stop(t + 0.46);
   }
