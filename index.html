@@ -167,8 +167,8 @@
   @media(max-width:879px){
     .scif-dnav{display:none}
     .scif-mnav{display:contents}
-    .scif-house{display:none}
-    .scif-cards{display:contents}
+    /* La casa se mantiene visible en mobile (tap a cada zona = link al servicio).
+       Las tarjetas apiladas quedan solo como fallback de reduced-motion. */
   }
   @media(prefers-reduced-motion:reduce){
     .scif-house{display:none}
