@@ -1,0 +1,4 @@
+# Trabajo / temporales
+*.log
+.DS_Store
+_src-design/

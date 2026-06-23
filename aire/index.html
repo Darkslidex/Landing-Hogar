@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Aire acondicionado en CABA y GBA — instalación y service de split y multisplit. Presupuesto sin cargo. TechCam Hogar.">
+<meta name="theme-color" content="#0B1012">
+<title>Aire acondicionado · TechCam Hogar — CABA y GBA</title>
+<link rel="stylesheet" href="../assets/fonts.css">
+<link rel="stylesheet" href="../assets/vendor/leaflet/leaflet.css">
+<style>
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:#0B1012}
+  ::selection{background:#25E0D0;color:#04100E}
+  img{max-width:100%}
+  .lf-map{filter:saturate(1.05)}
+  .leaflet-container{background:#0B1012!important;font-family:'Hanken Grotesk',sans-serif}
+  .leaflet-control-attribution{background:rgba(11,16,18,.7)!important;color:#5b6a6b!important}
+  .leaflet-control-attribution a{color:#8fa0a1!important}
+  @keyframes tc-rise{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes tc-marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  @keyframes tc-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+  @keyframes tc-pulse{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.25)}}
+  @keyframes tc-scrolldot{0%{transform:translateY(0);opacity:0}30%{opacity:1}70%{opacity:1}100%{transform:translateY(16px);opacity:0}}
+  @keyframes tc-spin{to{transform:rotate(360deg)}}
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+  }
+
+  [hidden]{display:none!important}
+  .scif{display:contents}
+  .scif-mnav,.scif-overlay,.scif-mbar{display:none}
+  @media(max-width:879px){
+    .scif-dnav{display:none}
+    .scif-mnav{display:contents}
+    .scif-mbar{display:contents}
+    .scif-bubble{display:none}
+  }
+  [data-root].menu-open .scif-overlay{display:contents}
+  body.tc-noscroll{overflow:hidden}
+
+</style>
+</head>
+<body>
+<div data-root style="background:#0B1012;color:#ECF3F2;font-family:'Hanken Grotesk',sans-serif;overflow-x:hidden;position:relative;-webkit-font-smoothing:antialiased">
+
+  <!-- ============ NAV ============ -->
+  <nav data-nav style="position:fixed;top:0;left:0;right:0;z-index:90;transition:background .35s ease,border-color .35s ease,box-shadow .35s ease;border-bottom:1px solid transparent">
+    <div style="max-width:1240px;margin:0 auto;padding:0 clamp(20px,5vw,56px);height:72px;display:flex;align-items:center;justify-content:space-between;gap:24px">
+      <a href="#top" style="display:flex;align-items:center;gap:11px;text-decoration:none;color:#ECF3F2">
+        <span style="display:inline-flex">
+          <svg width="26" height="26" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <rect x="1.2" y="1.2" width="29.6" height="29.6" rx="8" stroke="#25E0D0" stroke-width="1.6"/>
+            <path d="M8 11h16M8 16h16M8 21h10" stroke="#25E0D0" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="22" cy="21" r="2.4" fill="#FF9D2E"/>
+          </svg>
+        </span>
+        <span style="font-family:'Archivo',sans-serif;font-weight:800;letter-spacing:-.02em;font-size:19px;line-height:1">TechCam<span style="color:#25E0D0">.</span><span style="font-weight:500;color:#8FA0A1;font-size:13px;letter-spacing:.16em;text-transform:uppercase;margin-left:6px;vertical-align:middle">Hogar</span></span>
+      </a>
+
+      <div class="scif scif-dnav">
+        <div style="display:flex;align-items:center;gap:34px">
+          <div style="display:flex;align-items:center;gap:28px;font-size:14.5px;font-weight:500">
+            <a href="#servicios" style="color:#C4D0D0;text-decoration:none;transition:color .2s" data-hov-in='{"color": "#25E0D0"}' data-hov-out='{"color": "#C4D0D0"}'>Servicios</a>
+            <a href="#cotizador" style="color:#C4D0D0;text-decoration:none;transition:color .2s" data-hov-in='{"color": "#25E0D0"}' data-hov-out='{"color": "#C4D0D0"}'>Cotizador</a>
+            <a href="#trabajos" style="color:#C4D0D0;text-decoration:none;transition:color .2s" data-hov-in='{"color": "#25E0D0"}' data-hov-out='{"color": "#C4D0D0"}'>Trabajos</a>
+            <a href="#cobertura" style="color:#C4D0D0;text-decoration:none;transition:color .2s" data-hov-in='{"color": "#25E0D0"}' data-hov-out='{"color": "#C4D0D0"}'>Cobertura</a>
+            <a href="#faq" style="color:#C4D0D0;text-decoration:none;transition:color .2s" data-hov-in='{"color": "#25E0D0"}' data-hov-out='{"color": "#C4D0D0"}'>FAQ</a>
+          </div>
+          <a href="#cotizador" data-wa target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:#FF9D2E;color:#1A1206;font-weight:700;font-size:14px;padding:11px 18px;border-radius:10px;text-decoration:none;box-shadow:0 8px 24px -10px rgba(255,157,46,.7);transition:transform .2s,box-shadow .2s" data-hov-in='{"transform": "translateY(-2px)", "boxShadow": "0 14px 30px -10px rgba(255,157,46,.85)"}' data-hov-out='{"transform": "", "boxShadow": "0 8px 24px -10px rgba(255,157,46,.7)"}'>
+            Pedir presupuesto
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#1A1206" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="scif scif-mnav">
+        <button aria-label="Abrir menú" aria-expanded="false" data-action="menu-open" style="display:inline-flex;flex-direction:column;gap:5px;background:transparent;border:1px solid rgba(255,255,255,.16);border-radius:10px;padding:11px;cursor:pointer">
+          <span style="width:20px;height:2px;background:#ECF3F2;border-radius:2px;display:block"></span>
+          <span style="width:20px;height:2px;background:#ECF3F2;border-radius:2px;display:block"></span>
+          <span style="width:14px;height:2px;background:#25E0D0;border-radius:2px;display:block"></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============ MOBILE OVERLAY ============ -->
+  <div class="scif scif-overlay">
+    <div style="position:fixed;inset:0;z-index:100;background:#0B1012;display:flex;flex-direction:column;padding:0;animation:tc-rise .3s ease">
+      <div style="height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(20px,5vw,56px);border-bottom:1px solid rgba(255,255,255,.08)">
+        <span style="font-family:'Archivo',sans-serif;font-weight:800;font-size:19px">TechCam<span style="color:#25E0D0">.</span></span>
+        <button aria-label="Cerrar menú" data-action="menu-close" style="background:transparent;border:1px solid rgba(255,255,255,.16);border-radius:10px;padding:11px;cursor:pointer;color:#ECF3F2">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="#ECF3F2" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:8px;padding:0 clamp(24px,7vw,56px)">
+        <a href="#servicios" data-action="menu-close" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:clamp(30px,9vw,44px);letter-spacing:-.02em;color:#ECF3F2;text-decoration:none;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.07)"><span style="font-family:'Space Mono',monospace;font-size:13px;color:#25E0D0;vertical-align:super;margin-right:12px">01</span>Servicios</a>
+        <a href="#cotizador" data-action="menu-close" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:clamp(30px,9vw,44px);letter-spacing:-.02em;color:#ECF3F2;text-decoration:none;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.07)"><span style="font-family:'Space Mono',monospace;font-size:13px;color:#25E0D0;vertical-align:super;margin-right:12px">02</span>Cotizador</a>
+        <a href="#trabajos" data-action="menu-close" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:clamp(30px,9vw,44px);letter-spacing:-.02em;color:#ECF3F2;text-decoration:none;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.07)"><span style="font-family:'Space Mono',monospace;font-size:13px;color:#25E0D0;vertical-align:super;margin-right:12px">03</span>Trabajos</a>
+        <a href="#cobertura" data-action="menu-close" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:clamp(30px,9vw,44px);letter-spacing:-.02em;color:#ECF3F2;text-decoration:none;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.07)"><span style="font-family:'Space Mono',monospace;font-size:13px;color:#25E0D0;vertical-align:super;margin-right:12px">04</span>Cobertura</a>
+        <a href="#faq" data-action="menu-close" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:clamp(30px,9vw,44px);letter-spacing:-.02em;color:#ECF3F2;text-decoration:none;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.07)"><span style="font-family:'Space Mono',monospace;font-size:13px;color:#25E0D0;vertical-align:super;margin-right:12px">05</span>FAQ</a>
+      </div>
+      <div style="padding:24px clamp(24px,7vw,56px) 36px;display:flex;flex-direction:column;gap:12px">
+        <a href="#cotizador" data-wa target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:9px;background:#FF9D2E;color:#1A1206;font-weight:700;font-size:16px;padding:16px;border-radius:12px;text-decoration:none">WhatsApp · Pedir presupuesto</a>
+        <a href="tel:+5491178298512" style="display:flex;align-items:center;justify-content:center;gap:9px;border:1px solid rgba(37,224,208,.4);color:#25E0D0;font-weight:600;font-size:16px;padding:15px;border-radius:12px;text-decoration:none">Llamar ahora</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ HERO ============ -->
+  <header id="top" style="position:relative;min-height:100vh;padding:96px clamp(20px,5vw,56px) 60px;display:flex;align-items:center;overflow:hidden">
+    <canvas data-airflow style="position:absolute;inset:0;width:100%;height:100%;z-index:0"></canvas>
+    <div data-parallax="0.018" style="position:absolute;top:-10%;right:-8%;width:60vw;height:60vw;max-width:760px;max-height:760px;background:radial-gradient(circle at center,rgba(37,224,208,.16),rgba(37,224,208,0) 62%);z-index:0;pointer-events:none"></div>
+    <div style="position:absolute;inset:0;background:radial-gradient(120% 90% at 80% 10%,rgba(13,30,33,.2),rgba(11,16,18,.85) 70%);z-index:1;pointer-events:none"></div>
+
+    <div style="position:relative;z-index:2;max-width:1240px;margin:0 auto;width:100%;display:flex;gap:clamp(32px,5vw,72px);align-items:center;flex-wrap:wrap">
+      <div style="flex:1 1 460px;min-width:300px">
+        <div data-reveal data-reveal-delay="0" style="opacity:0;display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(37,224,208,.28);background:rgba(37,224,208,.05);border-radius:100px;padding:7px 14px;margin-bottom:26px">
+          <span style="width:7px;height:7px;border-radius:50%;background:#25E0D0;animation:tc-pulse 2.4s infinite"></span>
+          <span style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#A9DFDA">Climatización · CABA &amp; GBA</span>
+        </div>
+        <h1 data-reveal data-reveal-delay="80" style="opacity:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(42px,7.4vw,86px);line-height:.96;letter-spacing:-.035em;margin:0 0 22px;color:#F2F8F7">
+          La temperatura <span style="position:relative;color:#25E0D0;white-space:nowrap">ideal<svg width="100%" height="14" viewBox="0 0 200 14" preserveAspectRatio="none" style="position:absolute;left:0;bottom:-6px;width:100%;height:12px"><path d="M2 9c40-8 80-8 120-3s60 6 76 1" stroke="#25E0D0" stroke-width="3" fill="none" stroke-linecap="round" opacity=".55"/></svg></span><br>en tu casa, todo el año.
+        </h1>
+        <p data-reveal data-reveal-delay="160" style="opacity:0;font-size:clamp(16px,2.2vw,19px);line-height:1.6;color:#9FB0B1;max-width:520px;margin:0 0 34px">
+          Instalación y service de aire acondicionado <strong style="color:#CFDBDB;font-weight:600">split y multisplit</strong>. Frío en verano, calor en invierno: trabajo prolijo y presupuesto en 24 horas.
+        </p>
+        <div data-reveal data-reveal-delay="240" style="opacity:0;display:flex;gap:14px;flex-wrap:wrap;margin-bottom:30px">
+          <a href="#cotizador" data-wa target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:10px;background:#FF9D2E;color:#1A1206;font-weight:700;font-size:16px;padding:16px 24px;border-radius:13px;text-decoration:none;box-shadow:0 16px 36px -14px rgba(255,157,46,.8);transition:transform .2s,box-shadow .2s" data-hov-in='{"transform": "translateY(-3px)", "boxShadow": "0 22px 42px -14px rgba(255,157,46,.9)"}' data-hov-out='{"transform": "", "boxShadow": "0 16px 36px -14px rgba(255,157,46,.8)"}'>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="#1A1206"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.9c0 1.76.46 3.45 1.34 4.95L2 22l5.3-1.39c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2zm5.8 14.04c-.24.68-1.42 1.31-1.95 1.36-.5.05-1.13.07-1.83-.11-.42-.13-.96-.31-1.66-.61-2.92-1.26-4.83-4.2-4.98-4.39-.15-.2-1.19-1.58-1.19-3.01 0-1.43.75-2.13 1.02-2.42.27-.29.58-.36.78-.36.2 0 .39 0 .56.01.18.01.42-.07.66.5.24.58.82 2.01.89 2.16.07.14.12.31.02.51-.1.2-.15.31-.29.48-.15.17-.31.39-.44.52-.15.15-.3.31-.13.6.17.29.76 1.25 1.63 2.03 1.12 1 2.06 1.31 2.35 1.46.29.15.46.13.63-.08.17-.2.73-.85.92-1.14.2-.29.39-.24.66-.15.27.1 1.7.8 1.99.95.29.15.49.22.56.34.07.12.07.7-.17 1.38z"/></svg>
+            Escribir por WhatsApp
+          </a>
+          <a href="tel:+5491178298512" style="display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(37,224,208,.38);color:#D7EFEC;font-weight:600;font-size:16px;padding:16px 22px;border-radius:13px;text-decoration:none;background:rgba(37,224,208,.04);transition:background .2s,border-color .2s" data-hov-in='{"background": "rgba(37,224,208,.1)", "borderColor": "rgba(37,224,208,.7)"}' data-hov-out='{"background": "rgba(37,224,208,.04)", "borderColor": "rgba(37,224,208,.38)"}'>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 4h3.5l1.5 4-2 1.5a11 11 0 005 5l1.5-2 4 1.5V19a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z" stroke="#25E0D0" stroke-width="1.8" stroke-linejoin="round"/></svg>
+            Llamar ahora
+          </a>
+        </div>
+        <div data-reveal data-reveal-delay="320" style="opacity:0;display:flex;align-items:center;gap:18px;flex-wrap:wrap;font-size:13.5px;color:#7E9091">
+          <span style="display:inline-flex;align-items:center;gap:7px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2l8 4v5c0 5-3.4 8.5-8 11-4.6-2.5-8-6-8-11V6l8-4z" stroke="#25E0D0" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#25E0D0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>+12 años de oficio</span>
+          <span style="width:4px;height:4px;border-radius:50%;background:#3a4748"></span>
+          <span style="display:inline-flex;align-items:center;gap:7px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#25E0D0" stroke-width="1.6"/><path d="M12 7v5l3 2" stroke="#25E0D0" stroke-width="1.8" stroke-linecap="round"/></svg>Presupuesto sin cargo</span>
+        </div>
+      </div>
+
+      <div data-reveal data-reveal-delay="180" data-parallax="-0.03" style="opacity:0;flex:1 1 380px;min-width:280px;position:relative">
+        <div style="position:relative;border-radius:22px;overflow:hidden;border:1px solid rgba(255,255,255,.1);box-shadow:0 40px 90px -30px rgba(0,0,0,.7)">
+          <img src="assets/aire-2.jpeg" alt="Trabajo de aire acondicionado — TechCam Hogar" loading="lazy" decoding="async" style="display:block;width:100%;height:clamp(360px,52vw,540px);object-fit:cover">
+          <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(11,16,18,0) 55%,rgba(11,16,18,.55))"></div>
+        </div>
+        <div style="position:absolute;left:-6px;bottom:-18px;background:#0E1719;border:1px solid rgba(37,224,208,.25);border-radius:16px;padding:16px 20px;box-shadow:0 24px 50px -22px rgba(0,0,0,.8);display:flex;align-items:center;gap:14px;animation:tc-float 6s ease-in-out infinite">
+          <div style="width:46px;height:46px;border-radius:12px;background:rgba(37,224,208,.12);display:flex;align-items:center;justify-content:center">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 3v6m0 0l-3-3m3 3l3-3M5 13h14M7 17h10M9 21h6" stroke="#25E0D0" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div>
+            <div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:22px;line-height:1"><span data-counter data-target="500" data-suffix="+">500+</span></div>
+            <div style="font-size:12.5px;color:#8FA0A1;margin-top:3px">equipos instalados</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="position:absolute;left:50%;bottom:26px;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:8px">
+      <span style="width:22px;height:34px;border:1.5px solid rgba(255,255,255,.22);border-radius:12px;display:flex;justify-content:center;padding-top:7px"><span style="width:3px;height:7px;border-radius:2px;background:#25E0D0;animation:tc-scrolldot 1.8s infinite"></span></span>
+    </div>
+  </header>
+
+  <!-- ============ TRUST BAR ============ -->
+  <section style="background:#0E1517;border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06)">
+    <div style="max-width:1240px;margin:0 auto;padding:22px clamp(20px,5vw,56px);display:flex;flex-wrap:wrap;gap:14px 32px;justify-content:space-between;align-items:center">
+      <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:#BCC9C9;font-weight:500"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2l8 4v5c0 5-3.4 8.5-8 11-4.6-2.5-8-6-8-11V6l8-4z" stroke="#25E0D0" stroke-width="1.5" stroke-linejoin="round"/></svg>+12 años de experiencia</div>
+      <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:#BCC9C9;font-weight:500"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 4h9l5 5v11H6z" stroke="#25E0D0" stroke-width="1.5" stroke-linejoin="round"/></svg>Presupuesto sin cargo</div>
+      <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:#BCC9C9;font-weight:500"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#25E0D0" stroke-width="1.5"/><path d="M12 7v5l3 2" stroke="#25E0D0" stroke-width="1.6" stroke-linecap="round"/></svg>Presupuesto en 24 h</div>
+      <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:#BCC9C9;font-weight:500"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z" stroke="#25E0D0" stroke-width="1.5" stroke-linejoin="round"/><circle cx="12" cy="9" r="2.3" stroke="#25E0D0" stroke-width="1.5"/></svg>CABA y Gran Buenos Aires</div>
+    </div>
+  </section>
+
+  <!-- ============ BENEFICIOS (light) ============ -->
+  <section id="servicios" style="background:#EEEBE3;color:#0C1416;padding:clamp(72px,10vw,130px) clamp(20px,5vw,56px)">
+    <div style="max-width:1240px;margin:0 auto">
+      <div data-reveal style="opacity:0;display:flex;align-items:center;gap:14px;margin-bottom:18px">
+        <span style="font-family:'Space Mono',monospace;font-size:13px;letter-spacing:.18em;color:#0FB9AC">01</span>
+        <span style="width:34px;height:1px;background:#0C1416;opacity:.25"></span>
+        <span style="font-family:'Space Mono',monospace;font-size:12.5px;letter-spacing:.22em;text-transform:uppercase;color:#5C6A6B">Por qué TechCam</span>
+      </div>
+      <h2 data-reveal data-reveal-delay="60" style="opacity:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(30px,5vw,54px);line-height:1.02;letter-spacing:-.03em;margin:0 0 14px;max-width:760px;text-wrap:balance">Ingeniería del confort, no improvisación.</h2>
+      <p data-reveal data-reveal-delay="120" style="opacity:0;font-size:clamp(15px,2vw,18px);color:#54625F;max-width:560px;margin:0 0 50px;line-height:1.6">Cada instalación se piensa: caudal, ubicación, cañerías y vacío hecho como corresponde. Eso es lo que separa un equipo que dura del que falla en enero.</p>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:18px">
+        <div data-reveal data-reveal-delay="0" style="opacity:0;background:#fff;border:1px solid rgba(11,16,18,.08);border-radius:18px;padding:30px 26px;transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease" data-hov-in='{"transform": "translateY(-6px)", "boxShadow": "0 24px 50px -26px rgba(15,185,172,.45)", "borderColor": "rgba(15,185,172,.4)"}' data-hov-out='{"transform": "", "boxShadow": "", "borderColor": "rgba(11,16,18,.08)"}'>
+          <div style="width:52px;height:52px;border-radius:14px;background:#06292a;display:flex;align-items:center;justify-content:center;margin-bottom:20px"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 3v18M3 12h18" stroke="#25E0D0" stroke-width="1.6" stroke-linecap="round"/><path d="M7 7l10 10M17 7L7 17" stroke="#25E0D0" stroke-width="1.6" stroke-linecap="round" opacity=".5"/></svg></div>
+          <h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:20px;margin:0 0 9px;letter-spacing:-.01em">Frío y calor eficiente</h3>
+          <p style="font-size:14.5px;line-height:1.55;color:#5C6A6B;margin:0">Dimensionamos las frigorías reales del ambiente: ni de menos (no enfría), ni de más (consumo innecesario).</p>
+        </div>
+        <div data-reveal data-reveal-delay="80" style="opacity:0;background:#fff;border:1px solid rgba(11,16,18,.08);border-radius:18px;padding:30px 26px;transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease" data-hov-in='{"transform": "translateY(-6px)", "boxShadow": "0 24px 50px -26px rgba(15,185,172,.45)", "borderColor": "rgba(15,185,172,.4)"}' data-hov-out='{"transform": "", "boxShadow": "", "borderColor": "rgba(11,16,18,.08)"}'>
+          <div style="width:52px;height:52px;border-radius:14px;background:#06292a;display:flex;align-items:center;justify-content:center;margin-bottom:20px"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M13 2L5 14h6l-1 8 8-12h-6l1-8z" stroke="#25E0D0" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+          <h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:20px;margin:0 0 9px;letter-spacing:-.01em">Ahorro de energía</h3>
+          <p style="font-size:14.5px;line-height:1.55;color:#5C6A6B;margin:0">Equipos inverter bien instalados y mantenidos. Menos consumo en la boleta, mismo confort.</p>
+        </div>
+        <div data-reveal data-reveal-delay="160" style="opacity:0;background:#fff;border:1px solid rgba(11,16,18,.08);border-radius:18px;padding:30px 26px;transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease" data-hov-in='{"transform": "translateY(-6px)", "boxShadow": "0 24px 50px -26px rgba(15,185,172,.45)", "borderColor": "rgba(15,185,172,.4)"}' data-hov-out='{"transform": "", "boxShadow": "", "borderColor": "rgba(11,16,18,.08)"}'>
+          <div style="width:52px;height:52px;border-radius:14px;background:#06292a;display:flex;align-items:center;justify-content:center;margin-bottom:20px"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M4 7l8-4 8 4v10l-8 4-8-4V7z" stroke="#25E0D0" stroke-width="1.5" stroke-linejoin="round"/><path d="M4 7l8 4 8-4M12 11v10" stroke="#25E0D0" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
+          <h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:20px;margin:0 0 9px;letter-spacing:-.01em">Instalación prolija</h3>
+          <p style="font-size:14.5px;line-height:1.55;color:#5C6A6B;margin:0">Cañerías a nivel, vacío con bomba, soportes firmes y terminación limpia. Te dejamos todo ordenado.</p>
+        </div>
+        <div data-reveal data-reveal-delay="240" style="opacity:0;background:#fff;border:1px solid rgba(11,16,18,.08);border-radius:18px;padding:30px 26px;transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease" data-hov-in='{"transform": "translateY(-6px)", "boxShadow": "0 24px 50px -26px rgba(15,185,172,.45)", "borderColor": "rgba(15,185,172,.4)"}' data-hov-out='{"transform": "", "boxShadow": "", "borderColor": "rgba(11,16,18,.08)"}'>
+          <div style="width:52px;height:52px;border-radius:14px;background:#06292a;display:flex;align-items:center;justify-content:center;margin-bottom:20px"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#25E0D0" stroke-width="1.5"/><path d="M12 7v5l3 2" stroke="#25E0D0" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+          <h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:20px;margin:0 0 9px;letter-spacing:-.01em">Service rápido</h3>
+          <p style="font-size:14.5px;line-height:1.55;color:#5C6A6B;margin:0">¿No enfría o pierde gas? Diagnóstico claro, repuestos a mano y respuesta en el día cuando es urgente.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MARQUEE ============ -->
+  <section style="background:#0B1012;padding:34px 0;border-bottom:1px solid rgba(255,255,255,.06);overflow:hidden">
+    <div style="max-width:1240px;margin:0 auto 18px;padding:0 clamp(20px,5vw,56px)"><span style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:#5b6a6b">Instalamos y reparamos todas las marcas</span></div>
+    <div style="position:relative;width:100%;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)">
+      <div data-marquee style="display:flex;width:max-content;gap:0;animation:tc-marquee 32s linear infinite">
+        <div style="display:flex;gap:0">
+          <span style="font-family:'Archivo',sans-serif;font-weight:700;font-size:clamp(22px,3.4vw,34px);color:#2b3637;padding:0 34px;letter-spacing:-.02em;transition:color .25s" data-hov-in='{"color": "#25E0D0"}' data-hov-out='{"color": "#2b3637"}'>BGH</span>
+          <span style="font-family:'Archivo',sans-serif;font-weight:700;font-size:clamp(22px,3.4vw,34px);color:#2b3637;padding:0 34px;letter-spacing:-.02em;transition:color .25s" data-hov-in='{"color": "#25E0D0"}' data-hov-out='{"color": "#2b3637"}'>Surrey</span>
+          <span style="font-family:'Archivo',sans-serif;font-weight:700;font-size:clamp(22px,3.4vw,34px);color:#2b3637;padding:0 34px;letter-spacing:-.02em;transition:color .25s" data-hov-in='{"color": "#25E0D0"}' data-hov-out='{"color": "#2b3637"}'>Samsung</span>
+          <span style="font-family:'Archivo',sans-serif;font-weight:700;font-size:clamp(22px,3.4vw,34px);color:#2b3637;padding:0 34px;letter-spacing:-.02em;transition:color .25s" data-hov-in='{"color": "#25E0D0"}' data-hov-out='{"color": "#2b3637"}'>LG</span>
+          <span style="font-family:'Archivo',sans-serif;font-weight:700;font-size:clamp(22px,3.4vw,34px);color:#2b3637;padding:0 34px;letter-spacing:-.02em;transition:color .25s" data-hov-in='{"color": "#25E0D0"}' data-hov-out='{"color": "#2b3637"}'>Carrier</span>
+          <span style="font-family:'Archivo',sans-serif;font-weight:700;font-size:clamp(22px,3.4vw,34px);color:#2b3637;padding:0 34px;letter-spacing:-.02em;transition:color .25s" data-hov-in='{"color": "#25E0D0"}' data-hov-out='{"color": "#2b3637"}'>Midea</span>
+          <span style="font-family:'Archivo',sans-serif;font-weight:700;font-size:clamp(22px,3.4vw,34px);color:#2b3637;padding:0 34px;letter-spacing:-.02em;transition:color .25s" data-hov-in='{"color": "#25E0D0"}' data-hov-out='{"color": "#2b3637"}'>Philco</span>
+          <span style="font-family:'Archivo',sans-serif;font-weight:700;font-size:clamp(22px,3.4vw,34px);color:#2b3637;padding:0 34px;letter-spacing:-.02em;transition:color .25s" data-hov-in='{"color": "#25E0D0"}' data-hov-out='{"color": "#2b3637"}'>Hitachi</span>
+        </div>
+        <div style="display:flex;gap:0" aria-hidden="true">
+          <span style="font-family:'Archivo',sans-serif;font-weight:700;font-size:clamp(22px,3.4vw,34px);color:#2b3637;padding:0 34px;letter-spacing:-.02em">BGH</span>
+          <span style="font-family:'Archivo',sans-serif;font-weight:700;font-size:clamp(22px,3.4vw,34px);color:#2b3637;padding:0 34px;letter-spacing:-.02em">Surrey</span>
+          <span style="font-family:'Archivo',sans-serif;font-weight:700;font-size:clamp(22px,3.4vw,34px);color:#2b3637;padding:0 34px;letter-spacing:-.02em">Samsung</span>
+          <span style="font-family:'Archivo',sans-serif;font-weight:700;font-size:clamp(22px,3.4vw,34px);color:#2b3637;padding:0 34px;letter-spacing:-.02em">LG</span>
+          <span style="font-family:'Archivo',sans-serif;font-weight:700;font-size:clamp(22px,3.4vw,34px);color:#2b3637;padding:0 34px;letter-spacing:-.02em">Carrier</span>
+          <span style="font-family:'Archivo',sans-serif;font-weight:700;font-size:clamp(22px,3.4vw,34px);color:#2b3637;padding:0 34px;letter-spacing:-.02em">Midea</span>
+          <span style="font-family:'Archivo',sans-serif;font-weight:700;font-size:clamp(22px,3.4vw,34px);color:#2b3637;padding:0 34px;letter-spacing:-.02em">Philco</span>
+          <span style="font-family:'Archivo',sans-serif;font-weight:700;font-size:clamp(22px,3.4vw,34px);color:#2b3637;padding:0 34px;letter-spacing:-.02em">Hitachi</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ COTIZADOR ============ -->
+  <section id="cotizador" style="position:relative;background:#0B1012;padding:clamp(72px,10vw,130px) clamp(20px,5vw,56px);overflow:hidden">
+    <div style="position:absolute;top:20%;left:-10%;width:50vw;height:50vw;max-width:560px;max-height:560px;background:radial-gradient(circle,rgba(37,224,208,.1),transparent 65%);pointer-events:none"></div>
+    <div style="max-width:1100px;margin:0 auto;position:relative">
+      <div data-reveal style="opacity:0;text-align:center;margin-bottom:42px">
+        <div style="display:inline-flex;align-items:center;gap:14px;margin-bottom:16px">
+          <span style="font-family:'Space Mono',monospace;font-size:13px;letter-spacing:.18em;color:#25E0D0">02</span>
+          <span style="width:34px;height:1px;background:rgba(255,255,255,.25)"></span>
+          <span style="font-family:'Space Mono',monospace;font-size:12.5px;letter-spacing:.22em;text-transform:uppercase;color:#8FA0A1">Cotizador exprés</span>
+        </div>
+        <h2 style="font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(30px,5vw,54px);line-height:1.02;letter-spacing:-.03em;margin:0 0 12px;text-wrap:balance">Tu presupuesto en 4 toques.</h2>
+        <p style="font-size:clamp(15px,2vw,18px);color:#9FB0B1;max-width:520px;margin:0 auto;line-height:1.6">Respondé 4 preguntas y armamos un mensaje de WhatsApp listo para enviar. Sin formularios eternos.</p>
+      </div>
+
+      <div data-reveal data-reveal-delay="120" style="opacity:0;background:linear-gradient(180deg,#10191B,#0C1416);border:1px solid rgba(255,255,255,.08);border-radius:24px;padding:clamp(24px,4vw,44px);box-shadow:0 40px 90px -40px rgba(0,0,0,.8)">
+
+        <div id="tc-quiz"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ METRICS BAND ============ -->
+  <section style="background:#0E1517;border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06);padding:clamp(44px,6vw,70px) clamp(20px,5vw,56px)">
+    <div style="max-width:1240px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:30px">
+      <div data-reveal data-reveal-delay="0" style="opacity:0;text-align:center">
+        <div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(36px,5.5vw,58px);letter-spacing:-.03em;color:#25E0D0;line-height:1"><span data-counter data-target="12" data-suffix="+">12+</span></div>
+        <div style="font-size:14px;color:#8FA0A1;margin-top:8px">años de experiencia</div>
+      </div>
+      <div data-reveal data-reveal-delay="80" style="opacity:0;text-align:center">
+        <div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(36px,5.5vw,58px);letter-spacing:-.03em;color:#25E0D0;line-height:1"><span data-counter data-target="500" data-suffix="+">500+</span></div>
+        <div style="font-size:14px;color:#8FA0A1;margin-top:8px">equipos instalados</div>
+      </div>
+      <div data-reveal data-reveal-delay="160" style="opacity:0;text-align:center">
+        <div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(36px,5.5vw,58px);letter-spacing:-.03em;color:#25E0D0;line-height:1"><span data-counter data-target="24" data-suffix="h">24h</span></div>
+        <div style="font-size:14px;color:#8FA0A1;margin-top:8px">respuesta promedio</div>
+      </div>
+      <div data-reveal data-reveal-delay="240" style="opacity:0;text-align:center">
+        <div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(36px,5.5vw,58px);letter-spacing:-.03em;color:#25E0D0;line-height:1"><span data-counter data-target="4.9" data-decimals="1">4.9</span></div>
+        <div style="font-size:14px;color:#8FA0A1;margin-top:8px">★ promedio de clientes</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CÓMO TRABAJAMOS (light) ============ -->
+  <section style="background:#EEEBE3;color:#0C1416;padding:clamp(72px,10vw,130px) clamp(20px,5vw,56px)">
+    <div style="max-width:1240px;margin:0 auto">
+      <div data-reveal style="opacity:0;display:flex;align-items:center;gap:14px;margin-bottom:18px">
+        <span style="font-family:'Space Mono',monospace;font-size:13px;letter-spacing:.18em;color:#0FB9AC">03</span>
+        <span style="width:34px;height:1px;background:#0C1416;opacity:.25"></span>
+        <span style="font-family:'Space Mono',monospace;font-size:12.5px;letter-spacing:.22em;text-transform:uppercase;color:#5C6A6B">Cómo trabajamos</span>
+      </div>
+      <h2 data-reveal data-reveal-delay="60" style="opacity:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(30px,5vw,54px);line-height:1.02;letter-spacing:-.03em;margin:0 0 50px;max-width:680px;text-wrap:balance">Del WhatsApp al equipo andando, en 4 pasos.</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:0">
+        <div data-reveal data-reveal-delay="0" style="opacity:0;position:relative;padding:0 24px 0 0">
+          <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px"><span style="font-family:'Archivo',sans-serif;font-weight:800;font-size:42px;color:#cfccc1;letter-spacing:-.03em">01</span><span style="flex:1;height:2px;background:repeating-linear-gradient(90deg,#0FB9AC 0 6px,transparent 6px 12px)"></span><span style="width:10px;height:10px;border-radius:50%;background:#0FB9AC"></span></div>
+          <h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:19px;margin:0 0 8px;letter-spacing:-.01em">Contacto</h3>
+          <p style="font-size:14.5px;line-height:1.55;color:#5C6A6B;margin:0">Nos escribís por WhatsApp o usás el cotizador. Te respondemos enseguida con las primeras preguntas.</p>
+        </div>
+        <div data-reveal data-reveal-delay="100" style="opacity:0;position:relative;padding:0 24px">
+          <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px"><span style="font-family:'Archivo',sans-serif;font-weight:800;font-size:42px;color:#cfccc1;letter-spacing:-.03em">02</span><span style="flex:1;height:2px;background:repeating-linear-gradient(90deg,#0FB9AC 0 6px,transparent 6px 12px)"></span><span style="width:10px;height:10px;border-radius:50%;background:#0FB9AC"></span></div>
+          <h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:19px;margin:0 0 8px;letter-spacing:-.01em">Visita &amp; diagnóstico</h3>
+          <p style="font-size:14.5px;line-height:1.55;color:#5C6A6B;margin:0">Coordinamos una visita técnica para medir el ambiente, revisar la instalación y entender lo que necesitás.</p>
+        </div>
+        <div data-reveal data-reveal-delay="200" style="opacity:0;position:relative;padding:0 24px">
+          <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px"><span style="font-family:'Archivo',sans-serif;font-weight:800;font-size:42px;color:#cfccc1;letter-spacing:-.03em">03</span><span style="flex:1;height:2px;background:repeating-linear-gradient(90deg,#0FB9AC 0 6px,transparent 6px 12px)"></span><span style="width:10px;height:10px;border-radius:50%;background:#0FB9AC"></span></div>
+          <h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:19px;margin:0 0 8px;letter-spacing:-.01em">Presupuesto</h3>
+          <p style="font-size:14.5px;line-height:1.55;color:#5C6A6B;margin:0">Te pasamos el presupuesto detallado, con materiales y mano de obra. Sin sorpresas después.</p>
+        </div>
+        <div data-reveal data-reveal-delay="300" style="opacity:0;position:relative;padding:0 0 0 24px">
+          <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px"><span style="font-family:'Archivo',sans-serif;font-weight:800;font-size:42px;color:#FF9D2E;letter-spacing:-.03em">04</span><span style="flex:1;height:2px;background:#0FB9AC"></span><span style="width:10px;height:10px;border-radius:50%;background:#FF9D2E;box-shadow:0 0 0 4px rgba(255,157,46,.25)"></span></div>
+          <h3 style="font-family:'Archivo',sans-serif;font-weight:700;font-size:19px;margin:0 0 8px;letter-spacing:-.01em">Instalación / service</h3>
+          <p style="font-size:14.5px;line-height:1.55;color:#5C6A6B;margin:0">Hacemos el trabajo prolijo y en fecha. Probamos el equipo con vos y te explicamos el uso y mantenimiento.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ GALERÍA ============ -->
+  <section id="trabajos" style="background:#0B1012;padding:clamp(72px,10vw,130px) clamp(20px,5vw,56px)">
+    <div style="max-width:1240px;margin:0 auto">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:44px">
+        <div data-reveal style="opacity:0">
+          <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px">
+            <span style="font-family:'Space Mono',monospace;font-size:13px;letter-spacing:.18em;color:#25E0D0">04</span>
+            <span style="width:34px;height:1px;background:rgba(255,255,255,.25)"></span>
+            <span style="font-family:'Space Mono',monospace;font-size:12.5px;letter-spacing:.22em;text-transform:uppercase;color:#8FA0A1">Trabajos reales</span>
+          </div>
+          <h2 style="font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(30px,5vw,54px);line-height:1.02;letter-spacing:-.03em;margin:0;text-wrap:balance">Instalaciones que hablan solas.</h2>
+        </div>
+        <p data-reveal data-reveal-delay="80" style="opacity:0;font-size:14.5px;color:#8FA0A1;max-width:320px;margin:0;line-height:1.6">Tocá una foto para verla en grande. Cargá tus propias imágenes arrastrándolas a cada espacio.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:14px">
+        <div data-reveal data-reveal-delay="0" data-gallery style="opacity:0;cursor:zoom-in;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.08);position:relative" data-action="lightbox"><img src="assets/aire-2.jpeg" alt="Trabajo de aire acondicionado — TechCam Hogar" loading="lazy" decoding="async" style="display:block;width:100%;height:300px;object-fit:cover"><div style="position:absolute;left:14px;bottom:12px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.08em;color:#cfeeea;background:rgba(6,9,10,.55);backdrop-filter:blur(4px);padding:5px 9px;border-radius:7px;pointer-events:none">Service &amp; limpieza profunda</div></div>
+        <div data-reveal data-reveal-delay="80" data-gallery style="opacity:0;cursor:zoom-in;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.08);position:relative" data-action="lightbox"><img src="assets/aire-1.jpeg" alt="Trabajo de aire acondicionado — TechCam Hogar" loading="lazy" decoding="async" style="display:block;width:100%;height:300px;object-fit:cover"><div style="position:absolute;left:14px;bottom:12px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.08em;color:#cfeeea;background:rgba(6,9,10,.55);backdrop-filter:blur(4px);padding:5px 9px;border-radius:7px;pointer-events:none">Cuidamos tu piso y tus muebles</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ LIGHTBOX ============ -->
+  <div id="tc-lightbox" data-action="lightbox-close" hidden style="position:fixed;inset:0;z-index:110;background:rgba(6,9,10,.92);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:24px;cursor:zoom-out"><button data-action="lightbox-close" aria-label="Cerrar" style="position:absolute;top:22px;right:22px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:12px;cursor:pointer;color:#fff"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></button><img data-lightbox-img alt="" style="max-width:min(960px,92vw);max-height:84vh;border-radius:16px;box-shadow:0 40px 100px -30px rgba(0,0,0,.9);object-fit:contain"></div>
+
+  <!-- ============ TESTIMONIOS (light) ============ -->
+  <section style="background:#EEEBE3;color:#0C1416;padding:clamp(72px,10vw,130px) clamp(20px,5vw,56px)">
+    <div style="max-width:1240px;margin:0 auto">
+      <div data-reveal style="opacity:0;display:flex;align-items:center;gap:14px;margin-bottom:18px">
+        <span style="font-family:'Space Mono',monospace;font-size:13px;letter-spacing:.18em;color:#0FB9AC">05</span>
+        <span style="width:34px;height:1px;background:#0C1416;opacity:.25"></span>
+        <span style="font-family:'Space Mono',monospace;font-size:12.5px;letter-spacing:.22em;text-transform:uppercase;color:#5C6A6B">Lo que dicen</span>
+      </div>
+      <h2 data-reveal data-reveal-delay="60" style="opacity:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(30px,5vw,54px);line-height:1.02;letter-spacing:-.03em;margin:0 0 50px;max-width:640px;text-wrap:balance">Vecinos de CABA y GBA que ya viven cómodos.</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr));gap:18px">
+        <div data-reveal data-reveal-delay="0" style="opacity:0;background:#fff;border:1px solid rgba(11,16,18,.08);border-radius:18px;padding:30px 28px;display:flex;flex-direction:column;gap:18px">
+          <div style="display:flex;gap:3px"><svg width="18" height="18" viewBox="0 0 24 24" fill="#FF9D2E"><path d="M12 2l3 6.5 7 .9-5 5 1.3 7L12 18l-6.3 3.4L7 14.4l-5-5 7-.9L12 2z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#FF9D2E"><path d="M12 2l3 6.5 7 .9-5 5 1.3 7L12 18l-6.3 3.4L7 14.4l-5-5 7-.9L12 2z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#FF9D2E"><path d="M12 2l3 6.5 7 .9-5 5 1.3 7L12 18l-6.3 3.4L7 14.4l-5-5 7-.9L12 2z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#FF9D2E"><path d="M12 2l3 6.5 7 .9-5 5 1.3 7L12 18l-6.3 3.4L7 14.4l-5-5 7-.9L12 2z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#FF9D2E"><path d="M12 2l3 6.5 7 .9-5 5 1.3 7L12 18l-6.3 3.4L7 14.4l-5-5 7-.9L12 2z"/></svg></div>
+          <p style="font-size:16px;line-height:1.6;color:#28332f;margin:0;font-weight:500">«Vinieron al día siguiente, instalaron el split sin romper nada y dejaron todo impecable. El presupuesto fue exactamente lo que dijeron.»</p>
+          <div style="display:flex;align-items:center;gap:13px;margin-top:auto"><div aria-hidden="true" style="width:46px;height:46px;flex:none;border-radius:50%;background:#25E0D022;color:#0FB9AC;display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:800;font-size:18px">M</div><div><div style="font-weight:700;font-size:15px">Mariana G.</div><div style="font-size:13px;color:#5C6A6B">Caballito, CABA</div></div></div>
+        </div>
+        <div data-reveal data-reveal-delay="100" style="opacity:0;background:#0C1416;color:#ECF3F2;border:1px solid rgba(11,16,18,.08);border-radius:18px;padding:30px 28px;display:flex;flex-direction:column;gap:18px">
+          <div style="display:flex;gap:3px"><svg width="18" height="18" viewBox="0 0 24 24" fill="#FF9D2E"><path d="M12 2l3 6.5 7 .9-5 5 1.3 7L12 18l-6.3 3.4L7 14.4l-5-5 7-.9L12 2z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#FF9D2E"><path d="M12 2l3 6.5 7 .9-5 5 1.3 7L12 18l-6.3 3.4L7 14.4l-5-5 7-.9L12 2z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#FF9D2E"><path d="M12 2l3 6.5 7 .9-5 5 1.3 7L12 18l-6.3 3.4L7 14.4l-5-5 7-.9L12 2z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#FF9D2E"><path d="M12 2l3 6.5 7 .9-5 5 1.3 7L12 18l-6.3 3.4L7 14.4l-5-5 7-.9L12 2z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#FF9D2E"><path d="M12 2l3 6.5 7 .9-5 5 1.3 7L12 18l-6.3 3.4L7 14.4l-5-5 7-.9L12 2z"/></svg></div>
+          <p style="font-size:16px;line-height:1.6;margin:0;font-weight:500">«El aire del local no enfriaba y perdíamos clientes con el calor. Lo solucionaron en una visita. Atención de diez.»</p>
+          <div style="display:flex;align-items:center;gap:13px;margin-top:auto"><div aria-hidden="true" style="width:46px;height:46px;flex:none;border-radius:50%;background:#25E0D022;color:#0FB9AC;display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:800;font-size:18px">D</div><div><div style="font-weight:700;font-size:15px">Diego R.</div><div style="font-size:13px;color:#8FA0A1">Vicente López, GBA</div></div></div>
+        </div>
+        <div data-reveal data-reveal-delay="200" style="opacity:0;background:#fff;border:1px solid rgba(11,16,18,.08);border-radius:18px;padding:30px 28px;display:flex;flex-direction:column;gap:18px">
+          <div style="display:flex;gap:3px"><svg width="18" height="18" viewBox="0 0 24 24" fill="#FF9D2E"><path d="M12 2l3 6.5 7 .9-5 5 1.3 7L12 18l-6.3 3.4L7 14.4l-5-5 7-.9L12 2z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#FF9D2E"><path d="M12 2l3 6.5 7 .9-5 5 1.3 7L12 18l-6.3 3.4L7 14.4l-5-5 7-.9L12 2z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#FF9D2E"><path d="M12 2l3 6.5 7 .9-5 5 1.3 7L12 18l-6.3 3.4L7 14.4l-5-5 7-.9L12 2z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#FF9D2E"><path d="M12 2l3 6.5 7 .9-5 5 1.3 7L12 18l-6.3 3.4L7 14.4l-5-5 7-.9L12 2z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#FF9D2E"><path d="M12 2l3 6.5 7 .9-5 5 1.3 7L12 18l-6.3 3.4L7 14.4l-5-5 7-.9L12 2z"/></svg></div>
+          <p style="font-size:16px;line-height:1.6;color:#28332f;margin:0;font-weight:500">«Pedí presupuesto un domingo y el lunes ya tenía todo por escrito. Pusieron dos equipos en casa, súper prolijos.»</p>
+          <div style="display:flex;align-items:center;gap:13px;margin-top:auto"><div aria-hidden="true" style="width:46px;height:46px;flex:none;border-radius:50%;background:#25E0D022;color:#0FB9AC;display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:800;font-size:18px">L</div><div><div style="font-weight:700;font-size:15px">Lucía P.</div><div style="font-size:13px;color:#5C6A6B">San Isidro, GBA</div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ COBERTURA ============ -->
+  <section id="cobertura" style="background:#0B1012;padding:clamp(72px,10vw,130px) clamp(20px,5vw,56px)">
+    <div style="max-width:1240px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:clamp(30px,5vw,60px);align-items:center">
+      <div data-reveal style="opacity:0">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px">
+          <span style="font-family:'Space Mono',monospace;font-size:13px;letter-spacing:.18em;color:#25E0D0">06</span>
+          <span style="width:34px;height:1px;background:rgba(255,255,255,.25)"></span>
+          <span style="font-family:'Space Mono',monospace;font-size:12.5px;letter-spacing:.22em;text-transform:uppercase;color:#8FA0A1">Zona de cobertura</span>
+        </div>
+        <h2 style="font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(30px,5vw,52px);line-height:1.02;letter-spacing:-.03em;margin:0 0 18px;text-wrap:balance">Toda la Ciudad y el Gran Buenos Aires.</h2>
+        <p style="font-size:clamp(15px,2vw,17px);color:#9FB0B1;line-height:1.6;margin:0 0 26px;max-width:480px">Trabajamos en toda la Ciudad y en el Gran Buenos Aires Norte, Sur y Oeste. Si no ves tu zona, escribinos igual: seguramente llegamos.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:9px">
+          <span style="border:1px solid rgba(37,224,208,.28);background:rgba(37,224,208,.05);color:#A9DFDA;font-size:13.5px;padding:8px 14px;border-radius:100px">CABA · todos los barrios</span>
+          <span style="border:1px solid rgba(255,255,255,.12);color:#C4D0D0;font-size:13.5px;padding:8px 14px;border-radius:100px">GBA Norte</span>
+          <span style="border:1px solid rgba(255,255,255,.12);color:#C4D0D0;font-size:13.5px;padding:8px 14px;border-radius:100px">GBA Sur</span>
+          <span style="border:1px solid rgba(255,255,255,.12);color:#C4D0D0;font-size:13.5px;padding:8px 14px;border-radius:100px">GBA Oeste</span>
+        </div>
+      </div>
+      <div data-reveal data-reveal-delay="120" style="opacity:0;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.1);box-shadow:0 30px 70px -30px rgba(0,0,0,.7)">
+        <div data-map class="lf-map" style="width:100%;height:clamp(320px,46vw,460px);background:#0B1012"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FAQ (light) ============ -->
+  <section id="faq" style="background:#EEEBE3;color:#0C1416;padding:clamp(72px,10vw,130px) clamp(20px,5vw,56px)">
+    <div style="max-width:880px;margin:0 auto">
+      <div data-reveal style="opacity:0;display:flex;align-items:center;gap:14px;margin-bottom:18px">
+        <span style="font-family:'Space Mono',monospace;font-size:13px;letter-spacing:.18em;color:#0FB9AC">07</span>
+        <span style="width:34px;height:1px;background:#0C1416;opacity:.25"></span>
+        <span style="font-family:'Space Mono',monospace;font-size:12.5px;letter-spacing:.22em;text-transform:uppercase;color:#5C6A6B">Preguntas frecuentes</span>
+      </div>
+      <h2 data-reveal data-reveal-delay="60" style="opacity:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(30px,5vw,52px);line-height:1.02;letter-spacing:-.03em;margin:0 0 44px;text-wrap:balance">Lo que casi siempre nos preguntan.</h2>
+      <div data-reveal data-reveal-delay="100" style="opacity:0">
+        <div id="tc-faq"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA FINAL ============ -->
+  <section style="position:relative;background:#0B1012;padding:clamp(80px,11vw,150px) clamp(20px,5vw,56px);overflow:hidden;text-align:center">
+    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:80vw;height:80vw;max-width:760px;max-height:760px;background:radial-gradient(circle,rgba(37,224,208,.14),transparent 62%);pointer-events:none"></div>
+    <div data-reveal style="opacity:0;position:relative;max-width:760px;margin:0 auto">
+      <div style="display:inline-flex;align-items:center;gap:9px;border:1px solid rgba(255,157,46,.35);background:rgba(255,157,46,.06);border-radius:100px;padding:7px 16px;margin-bottom:24px"><span style="width:7px;height:7px;border-radius:50%;background:#FF9D2E;animation:tc-pulse 2s infinite"></span><span style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#FFC489">Atendemos ahora</span></div>
+      <h2 style="font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(34px,6.5vw,72px);line-height:1;letter-spacing:-.035em;margin:0 0 20px;text-wrap:balance">¿Listo para la temperatura ideal en casa?</h2>
+      <p style="font-size:clamp(16px,2.3vw,20px);color:#9FB0B1;line-height:1.55;max-width:520px;margin:0 auto 36px">Escribinos por WhatsApp y coordinamos la visita. Presupuesto sin cargo y sin compromiso.</p>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+        <a href="#cotizador" data-wa target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:11px;background:#FF9D2E;color:#1A1206;font-weight:700;font-size:17px;padding:18px 30px;border-radius:14px;text-decoration:none;box-shadow:0 18px 44px -16px rgba(255,157,46,.85);transition:transform .2s" data-hov-in='{"transform": "translateY(-3px)"}' data-hov-out='{"transform": ""}'><svg width="22" height="22" viewBox="0 0 24 24" fill="#1A1206"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.9c0 1.76.46 3.45 1.34 4.95L2 22l5.3-1.39c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2zm5.8 14.04c-.24.68-1.42 1.31-1.95 1.36-.5.05-1.13.07-1.83-.11-.42-.13-.96-.31-1.66-.61-2.92-1.26-4.83-4.2-4.98-4.39-.15-.2-1.19-1.58-1.19-3.01 0-1.43.75-2.13 1.02-2.42.27-.29.58-.36.78-.36.2 0 .39 0 .56.01.18.01.42-.07.66.5.24.58.82 2.01.89 2.16.07.14.12.31.02.51-.1.2-.15.31-.29.48-.15.17-.31.39-.44.52-.15.15-.3.31-.13.6.17.29.76 1.25 1.63 2.03 1.12 1 2.06 1.31 2.35 1.46.29.15.46.13.63-.08.17-.2.73-.85.92-1.14.2-.29.39-.24.66-.15.27.1 1.7.8 1.99.95.29.15.49.22.56.34.07.12.07.7-.17 1.38z"/></svg>Escribir por WhatsApp</a>
+        <a href="tel:+5491178298512" style="display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(37,224,208,.4);color:#D7EFEC;font-weight:600;font-size:17px;padding:18px 28px;border-radius:14px;text-decoration:none;background:rgba(37,224,208,.04);transition:background .2s" data-hov-in='{"background": "rgba(37,224,208,.1)"}' data-hov-out='{"background": "rgba(37,224,208,.04)"}'><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 4h3.5l1.5 4-2 1.5a11 11 0 005 5l1.5-2 4 1.5V19a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z" stroke="#25E0D0" stroke-width="1.8" stroke-linejoin="round"/></svg>+54 9 11 7829-8512</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer style="background:#080C0D;border-top:1px solid rgba(255,255,255,.06);padding:clamp(56px,7vw,80px) clamp(20px,5vw,56px) 40px">
+    <div style="max-width:1240px;margin:0 auto">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:40px;padding-bottom:44px;border-bottom:1px solid rgba(255,255,255,.07)">
+        <div style="grid-column:span 1">
+          <div style="display:flex;align-items:center;gap:11px;margin-bottom:16px">
+            <svg width="26" height="26" viewBox="0 0 32 32" fill="none"><rect x="1.2" y="1.2" width="29.6" height="29.6" rx="8" stroke="#25E0D0" stroke-width="1.6"/><path d="M8 11h16M8 16h16M8 21h10" stroke="#25E0D0" stroke-width="2" stroke-linecap="round"/><circle cx="22" cy="21" r="2.4" fill="#FF9D2E"/></svg>
+            <span style="font-family:'Archivo',sans-serif;font-weight:800;font-size:19px">TechCam<span style="color:#25E0D0">.</span> <span style="font-weight:500;color:#8FA0A1;font-size:12px;letter-spacing:.16em;text-transform:uppercase">Hogar</span></span>
+          </div>
+          <p style="font-size:14px;color:#7E9091;line-height:1.6;margin:0 0 18px;max-width:280px">Climatización residencial y comercial. Instalación y service de aire acondicionado con criterio de ingeniería.</p>
+        </div>
+        <div>
+          <h4 style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#5b6a6b;margin:0 0 16px;font-weight:400">Otros servicios</h4>
+          <div style="display:flex;flex-direction:column;gap:11px;font-size:14.5px">
+            <a href="#" style="color:#C4D0D0;text-decoration:none;transition:color .2s" data-hov-in='{"color": "#25E0D0"}' data-hov-out='{"color": "#C4D0D0"}'>Aire acondicionado</a>
+            <a href="#" style="color:#C4D0D0;text-decoration:none;transition:color .2s" data-hov-in='{"color": "#25E0D0"}' data-hov-out='{"color": "#C4D0D0"}'>Electricidad</a>
+            <a href="#" style="color:#C4D0D0;text-decoration:none;transition:color .2s" data-hov-in='{"color": "#25E0D0"}' data-hov-out='{"color": "#C4D0D0"}'>Refacciones</a>
+          </div>
+        </div>
+        <div>
+          <h4 style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#5b6a6b;margin:0 0 16px;font-weight:400">Contacto</h4>
+          <div style="display:flex;flex-direction:column;gap:11px;font-size:14.5px">
+            <a href="#cotizador" data-wa target="_blank" rel="noopener" style="color:#C4D0D0;text-decoration:none;transition:color .2s;display:flex;align-items:center;gap:9px" data-hov-in='{"color": "#25E0D0"}' data-hov-out='{"color": "#C4D0D0"}'><svg width="16" height="16" viewBox="0 0 24 24" fill="#9FB0B1"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.9c0 1.76.46 3.45 1.34 4.95L2 22l5.3-1.39c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2z"/></svg>WhatsApp</a>
+            <a href="tel:+5491178298512" style="color:#C4D0D0;text-decoration:none;transition:color .2s;display:flex;align-items:center;gap:9px" data-hov-in='{"color": "#25E0D0"}' data-hov-out='{"color": "#C4D0D0"}'><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 4h3.5l1.5 4-2 1.5a11 11 0 005 5l1.5-2 4 1.5V19a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z" stroke="#9FB0B1" stroke-width="1.5" stroke-linejoin="round"/></svg>+54 9 11 7829-8512</a>
+            <a href="mailto:info@techcam.com.ar" style="color:#C4D0D0;text-decoration:none;transition:color .2s;display:flex;align-items:center;gap:9px" data-hov-in='{"color": "#25E0D0"}' data-hov-out='{"color": "#C4D0D0"}'><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="#9FB0B1" stroke-width="1.5"/><path d="M4 7l8 5 8-5" stroke="#9FB0B1" stroke-width="1.5"/></svg>info@techcam.com.ar</a>
+          </div>
+        </div>
+        <div>
+          <h4 style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#5b6a6b;margin:0 0 16px;font-weight:400">Zona</h4>
+          <p style="font-size:14.5px;color:#C4D0D0;line-height:1.6;margin:0">CABA y Gran Buenos Aires<br><span style="color:#7E9091">Lun a Sáb · 8 a 20 h</span></p>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding-top:26px">
+        <p style="font-size:13px;color:#5b6a6b;margin:0">© 2026 TechCam Hogar. Todos los derechos reservados.</p>
+        
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============ FLOATING WHATSAPP ============ -->
+  <div class="scif scif-bubble">
+    <a href="#cotizador" data-wa target="_blank" rel="noopener" aria-label="Escribir por WhatsApp" style="position:fixed;right:24px;bottom:24px;z-index:80;width:60px;height:60px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;box-shadow:0 14px 34px -8px rgba(37,211,102,.7);transition:transform .25s" data-hov-in='{"transform": "scale(1.08)"}' data-hov-out='{"transform": ""}'>
+      <span style="position:absolute;inset:0;border-radius:50%;border:2px solid #25D366;animation:tc-pulse 2.2s infinite;opacity:.5"></span>
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="#fff"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.9c0 1.76.46 3.45 1.34 4.95L2 22l5.3-1.39c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2zm5.8 14.04c-.24.68-1.42 1.31-1.95 1.36-.5.05-1.13.07-1.83-.11-.42-.13-.96-.31-1.66-.61-2.92-1.26-4.83-4.2-4.98-4.39-.15-.2-1.19-1.58-1.19-3.01 0-1.43.75-2.13 1.02-2.42.27-.29.58-.36.78-.36.2 0 .39 0 .56.01.18.01.42-.07.66.5.24.58.82 2.01.89 2.16.07.14.12.31.02.51-.1.2-.15.31-.29.48-.15.17-.31.39-.44.52-.15.15-.3.31-.13.6.17.29.76 1.25 1.63 2.03 1.12 1 2.06 1.31 2.35 1.46.29.15.46.13.63-.08.17-.2.73-.85.92-1.14.2-.29.39-.24.66-.15.27.1 1.7.8 1.99.95.29.15.49.22.56.34.07.12.07.7-.17 1.38z"/></svg>
+    </a>
+  </div>
+
+  <!-- ============ MOBILE STICKY BAR ============ -->
+  <div class="scif scif-mbar">
+    <div style="position:fixed;left:0;right:0;bottom:0;z-index:85;background:rgba(11,16,18,.92);backdrop-filter:blur(14px);border-top:1px solid rgba(255,255,255,.1);padding:10px 14px calc(10px + env(safe-area-inset-bottom));display:flex;gap:10px">
+      <a href="#cotizador" data-wa target="_blank" rel="noopener" style="flex:1;display:flex;align-items:center;justify-content:center;gap:8px;background:#FF9D2E;color:#1A1206;font-weight:700;font-size:15px;padding:14px;border-radius:12px;text-decoration:none"><svg width="18" height="18" viewBox="0 0 24 24" fill="#1A1206"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.9c0 1.76.46 3.45 1.34 4.95L2 22l5.3-1.39c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2z"/></svg>WhatsApp</a>
+      <a href="tel:+5491178298512" style="flex:none;display:flex;align-items:center;justify-content:center;gap:8px;border:1px solid rgba(37,224,208,.4);color:#25E0D0;font-weight:600;font-size:15px;padding:14px 20px;border-radius:12px;text-decoration:none"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 4h3.5l1.5 4-2 1.5a11 11 0 005 5l1.5-2 4 1.5V19a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z" stroke="#25E0D0" stroke-width="1.8" stroke-linejoin="round"/></svg>Llamar</a>
+    </div>
+  </div>
+
+</div>
+<script src="../assets/vendor/leaflet/leaflet.js"></script>
+<script src="config.js"></script>
+<script src="../assets/landing.js" defer></script>
+</body>
+</html>

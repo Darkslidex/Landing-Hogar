@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="TechCam Hogar — aire acondicionado, electricidad y refacciones en CABA y Gran Buenos Aires. Un solo equipo de confianza para toda tu casa.">
+<meta name="theme-color" content="#0B1012">
+<title>TechCam Hogar — Aire, electricidad y refacciones · CABA y GBA</title>
+<link rel="stylesheet" href="assets/fonts.css">
+<style>
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:#0B1012}
+  ::selection{background:#25E0D0;color:#04100E}
+  img{max-width:100%}
+
+  /* ---- keyframes (idle "respira" + thematic motion) ---- */
+  @keyframes pf-rise{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes pf-pulse{0%,100%{opacity:.45;transform:scale(1)}50%{opacity:1;transform:scale(1.3)}}
+  @keyframes pf-scrolldot{0%{transform:translateY(0);opacity:0}30%{opacity:1}70%{opacity:1}100%{transform:translateY(14px);opacity:0}}
+  @keyframes pf-breathe{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-3px) scale(1.004)}}
+  @keyframes pf-flicker{0%,100%{opacity:.5}45%{opacity:.62}50%{opacity:.38}55%{opacity:.6}70%{opacity:.5}}
+  @keyframes pf-airdot{0%{opacity:0;transform:translate(0,0)}12%{opacity:.9}100%{opacity:0;transform:translate(-34px,118px)}}
+  @keyframes pf-flow{to{stroke-dashoffset:-220}}
+  @keyframes pf-spark{0%{opacity:0;transform:scale(.4) rotate(0deg)}30%{opacity:1;transform:scale(1.15) rotate(8deg)}100%{opacity:0;transform:scale(.7) rotate(0deg)}}
+  @keyframes pf-dust{0%{opacity:0;transform:translate(0,0)}20%{opacity:.4}100%{opacity:0;transform:translate(10px,-26px)}}
+  @keyframes pf-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+  @keyframes pf-blink{0%,100%{opacity:1}50%{opacity:.32}}
+  .hint-d{animation:pf-blink 1.8s ease-in-out infinite}
+  @keyframes pf-twinkle{0%,100%{opacity:.12;transform:scale(.6)}50%{opacity:1;transform:scale(1.2)}}
+  @keyframes pf-hue{0%{filter:hue-rotate(0deg)}100%{filter:hue-rotate(360deg)}}
+  @keyframes pf-lamp{0%,100%{opacity:.45}42%{opacity:.95}50%{opacity:.3}58%{opacity:.85}}
+  @keyframes pf-fall{0%{opacity:0;transform:translateY(-6px)}22%{opacity:.85}100%{opacity:0;transform:translateY(38px)}}
+  @keyframes pf-airflow{to{stroke-dashoffset:-48}}
+  @keyframes pf-rise2{0%{opacity:0;transform:translate(0,5px)}30%{opacity:.5}100%{opacity:0;transform:translate(8px,-26px)}}
+
+  #pf-scene .star{animation:pf-twinkle 3.4s ease-in-out infinite}
+  #pf-scene .star.hue{animation:pf-twinkle 3.4s ease-in-out infinite,pf-hue 6s linear infinite}
+  #pf-scene .board-lamp{animation:pf-lamp 4.2s ease-in-out infinite}
+  #pf-scene .board-lamp.b2{animation-delay:.9s}
+  [data-hero].is-biblio #pf-scene .board-lamp{animation:pf-lampghost 5s linear infinite}
+  [data-hero].is-biblio #pf-scene .board-lamp.b2{animation-duration:4.1s;animation-delay:-1.7s}
+  @keyframes pf-lampghost{0%{opacity:1}5%{opacity:.05}8%{opacity:1}10%{opacity:.08}13%{opacity:1}15%{opacity:.04}19%{opacity:1}38%{opacity:1}40%{opacity:.06}43%{opacity:1}45%{opacity:.5}47%{opacity:.04}51%{opacity:1}66%{opacity:1}68%{opacity:.05}70%{opacity:1}72%{opacity:.07}76%{opacity:1}90%{opacity:1}92%{opacity:.04}95%{opacity:1}100%{opacity:1}}
+  #pf-scene .logo-glow{animation:pf-flicker 4.8s ease-in-out infinite}
+
+  /* soft room illumination — no hard boxes */
+  #pf-scene .room-glow{position:absolute;opacity:0;transition:opacity .55s ease;pointer-events:none;mix-blend-mode:screen;filter:blur(13px)}
+  [data-hero].is-aire #pf-scene .rg-aire{opacity:.9}
+  [data-hero].is-elec #pf-scene .rg-elec{opacity:.95}
+  [data-hero].is-refac #pf-scene .rg-refac{opacity:.9}
+
+  /* particles only while a room is active */
+  #pf-scene .mote{position:absolute;border-radius:50%;opacity:0;pointer-events:none}
+  [data-hero] #pf-scene .m-air{animation:pf-fall 2.8s linear infinite}
+  #pf-scene .m-air:nth-child(2){animation-delay:.55s}
+  #pf-scene .m-air:nth-child(3){animation-delay:1.1s}
+  #pf-scene .m-air:nth-child(4){animation-delay:1.65s}
+  #pf-scene .m-air:nth-child(5){animation-delay:2.2s}
+  [data-hero].is-aire #pf-scene .m-air{animation-duration:1.2s}
+  [data-hero].is-aire #pf-scene .m-mist{animation:pf-mist 3.6s ease-in infinite}
+  [data-hero].is-aire #pf-scene .m-mist:nth-child(2){animation-delay:1.2s}
+  [data-hero].is-aire #pf-scene .m-mist:nth-child(3){animation-delay:2.4s}
+  [data-hero].is-refac #pf-scene .m-dust{animation:pf-rise2 3.6s linear infinite}
+  [data-hero].is-refac #pf-scene .m-dust:nth-child(2){animation-delay:1.2s}
+  [data-hero].is-refac #pf-scene .m-dust:nth-child(3){animation-delay:2.4s}
+  [data-hero].is-refac #pf-scene .m-dust:nth-child(4){animation-delay:.6s}
+  [data-hero].is-refac #pf-scene .m-dust:nth-child(5){animation-delay:1.8s}
+  #pf-scene .rf-lamp{opacity:0;transition:opacity .5s ease;transform-origin:50% 0%}
+  [data-hero].is-refac #pf-scene .rf-lamp{opacity:1;animation:pf-swing 2.8s ease-in-out infinite}
+  @keyframes pf-swing{0%,100%{transform:rotate(-3.2deg)}50%{transform:rotate(3.2deg)}}
+
+  #pf-scene .hot{cursor:pointer;outline:none;border-radius:8px}
+  #pf-scene .hot:focus-visible{box-shadow:0 0 22px 3px rgba(236,243,242,.32)}
+  /* ---- AIRE: flowing streamlines (faint base + travelling glow + bubbles) ---- */
+  #pf-scene .airflow{opacity:.55;transition:opacity .5s ease}
+  [data-hero].is-aire #pf-scene .airflow{opacity:1}
+  #pf-scene .af-base{opacity:.2}
+  #pf-scene .af-glow{stroke-dasharray:20 150;filter:drop-shadow(0 0 3px #7fe9df);animation:pf-airflow 2.7s linear infinite}
+  #pf-scene .af-glow.d2{animation-duration:3.1s;animation-delay:-1s}
+  #pf-scene .af-glow.d3{animation-duration:2.4s;animation-delay:-1.7s}
+
+  /* ---- ELECTRICIDAD: current pulses along the wires ---- */
+  #pf-scene .eflow{opacity:0;transition:opacity .4s ease}
+  [data-hero].is-elec #pf-scene .eflow{opacity:1}
+  #pf-scene .e-base{opacity:.18}
+  #pf-scene .e-glow{stroke-dasharray:14 120;filter:drop-shadow(0 0 3px #ffd23f);animation:pf-eflow 1.4s linear infinite}
+  #pf-scene .e-glow.d2{animation-duration:1.1s;animation-delay:-.5s}
+  #pf-scene .e-glow.d3{animation-duration:1.7s;animation-delay:-.9s}
+  #pf-scene .e-node{opacity:0}
+  [data-hero].is-elec #pf-scene .e-node{opacity:1;animation:pf-flicker 2.4s ease-in-out infinite}
+  @keyframes pf-airflow{to{stroke-dashoffset:-170}}
+  @keyframes pf-eflow{to{stroke-dashoffset:-134}}
+
+  /* lights triggered by electricidad */
+  #pf-scene .rg-elecroom{opacity:0;transition:opacity .5s ease;mix-blend-mode:screen;pointer-events:none;filter:blur(12px)}
+  [data-hero].is-elec #pf-scene .rg-elecroom{opacity:.85}
+  #pf-scene .lib-light{opacity:0;transition:opacity .55s ease;mix-blend-mode:screen;pointer-events:none}
+  [data-hero].is-elec #pf-scene .lib-light{opacity:1}
+  #pf-scene .lib-bulb{opacity:0;transition:opacity .4s ease;mix-blend-mode:screen;pointer-events:none}
+  [data-hero].is-elec #pf-scene .lib-bulb{opacity:1;animation:pf-flicker 3s ease-in-out infinite}
+
+  /* billboard ad swap */
+  #pf-scene [data-board-default],#pf-scene [data-board-active]{transition:opacity .3s ease}
+
+  @media (prefers-reduced-motion: reduce){.hint-d,#pf-scene .star,#pf-scene .board-lamp,#pf-scene .logo-glow,#pf-scene .mote,#pf-scene .rf-lamp{animation:none}}
+
+  /* ---- the living scene: idle states ---- */
+  #pf-casa .breathe{animation:pf-breathe 8s ease-in-out infinite;transform-origin:600px 470px}
+  #pf-casa .air-stream{opacity:.18;transition:opacity .5s ease}
+  #pf-casa .air-dot{animation:pf-airdot 4.6s linear infinite}
+  #pf-casa .air-dot:nth-child(2){animation-delay:.6s}
+  #pf-casa .air-dot:nth-child(3){animation-delay:1.3s}
+  #pf-casa .air-dot:nth-child(4){animation-delay:2s}
+  #pf-casa .air-dot:nth-child(5){animation-delay:2.7s}
+  #pf-casa .air-dot:nth-child(6){animation-delay:3.4s}
+  #pf-casa .air-line{stroke-dasharray:6 14;animation:pf-flow 5s linear infinite;opacity:.5}
+  #pf-casa .lamp-bulb{animation:pf-flicker 5.5s ease-in-out infinite}
+  #pf-casa .warm-wash{opacity:.05;transition:opacity .6s ease}
+  #pf-casa .room-light{opacity:.12;transition:opacity .5s ease}
+  #pf-casa .conduit-flow{stroke-dasharray:5 11;stroke-dashoffset:0;animation:pf-flow 5.5s linear infinite;opacity:.22;transition:opacity .4s,stroke .4s}
+  #pf-casa .spark{opacity:0;transform-origin:center}
+  #pf-casa .dust{animation:pf-dust 5.5s linear infinite;opacity:.22}
+  #pf-casa .dust:nth-child(2){animation-delay:1.6s}
+  #pf-casa .dust:nth-child(3){animation-delay:3.1s}
+  #pf-casa .plaster{transform:scaleX(0);transform-origin:left center;transition:transform 1.15s cubic-bezier(.62,.03,.2,1)}
+  #pf-casa .glow{opacity:0;transition:opacity .55s ease}
+  #pf-casa .zone-ring{opacity:0;transition:opacity .4s ease}
+  #pf-casa .zone{cursor:pointer;outline:none}
+  #pf-casa .zone:focus-visible .zone-ring{opacity:1}
+
+  /* ---- active states driven by [data-hero] root class ---- */
+  [data-hero].is-aire #pf-casa .air-stream{opacity:1}
+  [data-hero].is-aire #pf-casa .air-line{opacity:1;animation-duration:2.6s}
+  [data-hero].is-aire #pf-casa .air-dot{animation-duration:2.8s}
+  [data-hero].is-aire #pf-casa .g-aire{opacity:.95}
+  [data-hero].is-aire #pf-casa .ring-aire{opacity:1}
+
+  [data-hero].is-elec #pf-casa .warm-wash{opacity:.62}
+  [data-hero].is-elec #pf-casa .room-light{opacity:1}
+  [data-hero].is-elec #pf-casa .lamp-bulb{opacity:1;animation:none}
+  [data-hero].is-elec #pf-casa .lamp-halo{opacity:1}
+  [data-hero].is-elec #pf-casa .conduit-flow{opacity:1;stroke:#FFD23F;animation-duration:.9s}
+  [data-hero].is-elec #pf-casa .spark{animation:pf-spark .55s ease-out 2}
+  [data-hero].is-elec #pf-casa .g-elec{opacity:.95}
+  [data-hero].is-elec #pf-casa .ring-elec{opacity:1}
+
+  [data-hero].is-refac #pf-casa .plaster{transform:scaleX(1)}
+  [data-hero].is-refac #pf-casa .scaffold{opacity:.45}
+  [data-hero].is-refac #pf-casa .g-refac{opacity:.95}
+  [data-hero].is-refac #pf-casa .ring-refac{opacity:1}
+
+  /* ---- floating zone cards ---- */
+  .zone-card{opacity:0;transform:translateY(12px) scale(.98);transition:opacity .4s ease,transform .4s ease;pointer-events:none}
+  [data-hero].is-aire .card-aire,[data-hero].is-elec .card-elec,[data-hero].is-refac .card-refac{opacity:1;transform:none;pointer-events:auto}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+    #pf-casa .air-stream{opacity:.5}
+    #pf-casa .plaster{transform:scaleX(.5)}
+    #pf-casa .lamp-bulb{opacity:.7}
+  }
+
+  /* ---- sc-if estaticos (display:contents = el wrapper no altera el layout) ---- */
+  .scif{display:contents}
+  .scif-mnav,.scif-cards,.scif-overlay{display:none}
+  @media(max-width:879px){
+    .scif-dnav{display:none}
+    .scif-mnav{display:contents}
+    .scif-house{display:none}
+    .scif-cards{display:contents}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .scif-house{display:none}
+    .scif-cards{display:contents}
+  }
+  [data-hero].menu-open .scif-overlay{display:contents}
+
+</style>
+</head>
+<body>
+<div data-hero data-root style="background:#0B1012;color:#ECF3F2;font-family:'Hanken Grotesk',sans-serif;overflow-x:hidden;position:relative;-webkit-font-smoothing:antialiased">
+
+  <!-- ============================ NAV ============================ -->
+  <nav data-nav style="position:fixed;top:0;left:0;right:0;z-index:90;transition:background .35s ease,border-color .35s ease,box-shadow .35s ease;border-bottom:1px solid transparent">
+    <div style="max-width:1280px;margin:0 auto;padding:0 clamp(20px,5vw,56px);height:74px;display:flex;align-items:center;justify-content:space-between;gap:24px">
+      <a href="#top" aria-label="TechCam Hogar — inicio" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:#ECF3F2">
+        <svg width="30" height="30" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+          <rect x="1.4" y="1.4" width="29.2" height="29.2" rx="8.5" stroke="#3A4748" stroke-width="1.5"/>
+          <path d="M7.5 11.5h17M7.5 16h17M7.5 20.5h11" stroke="#ECF3F2" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="22.5" cy="20.5" r="2.3" fill="#25E0D0"/>
+        </svg>
+        <span style="font-family:'Archivo',sans-serif;font-weight:800;letter-spacing:-.02em;font-size:20px;line-height:1">TechCam<span style="display:inline-flex;gap:2px;margin:0 1px 0 2px;vertical-align:middle"><span style="width:5px;height:5px;border-radius:50%;background:#25E0D0;display:inline-block"></span><span style="width:5px;height:5px;border-radius:50%;background:#FFD23F;display:inline-block"></span><span style="width:5px;height:5px;border-radius:50%;background:#C65D3B;display:inline-block"></span></span><span style="font-weight:500;color:#8FA0A1;font-size:13px;letter-spacing:.18em;text-transform:uppercase;margin-left:7px;vertical-align:middle">Hogar</span></span>
+      </a>
+
+      <div class="scif scif-dnav">
+        <div style="display:flex;align-items:center;gap:30px">
+          <div style="display:flex;align-items:center;gap:26px;font-size:14.5px;font-weight:500">
+            <a href="#servicios" style="color:#C4D0D0;text-decoration:none;transition:color .2s" data-hov-in='{"color": "#ECF3F2"}' data-hov-out='{"color": "#C4D0D0"}'>Servicios</a>
+            <a href="#manifiesto" style="color:#C4D0D0;text-decoration:none;transition:color .2s" data-hov-in='{"color": "#ECF3F2"}' data-hov-out='{"color": "#C4D0D0"}'>La marca</a>
+            <a href="#contacto" style="color:#C4D0D0;text-decoration:none;transition:color .2s" data-hov-in='{"color": "#ECF3F2"}' data-hov-out='{"color": "#C4D0D0"}'>Contacto</a>
+          </div>
+          <button data-action="sound" data-sound-btn aria-label="Activar ambiente sonoro" aria-pressed="false" style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.14);color:#C4D0D0;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:9px 13px;border-radius:10px;cursor:pointer;transition:border-color .2s,color .2s" data-hov-in='{"borderColor": "rgba(255,255,255,.34)", "color": "#ECF3F2"}' data-hov-out='{"borderColor": "rgba(255,255,255,.14)", "color": "#C4D0D0"}'>
+            <span data-sound-icon><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 9v6h4l5 4V5L8 9H4z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M16 9l5 6M21 9l-5 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span><span data-sound-label>Silencio</span>
+          </button>
+          <a href="#contacto" data-wa target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:#FF9D2E;color:#1A1206;font-weight:700;font-size:14px;padding:11px 18px;border-radius:11px;text-decoration:none;box-shadow:0 8px 24px -10px rgba(255,157,46,.7);transition:transform .2s,box-shadow .2s" data-hov-in='{"transform": "translateY(-2px)", "boxShadow": "0 14px 30px -10px rgba(255,157,46,.85)"}' data-hov-out='{"transform": "", "boxShadow": "0 8px 24px -10px rgba(255,157,46,.7)"}'>
+            Pedir presupuesto
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#1A1206" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="scif scif-mnav">
+        <div style="display:flex;align-items:center;gap:10px">
+          <button data-action="sound" data-sound-btn aria-label="Activar ambiente sonoro" aria-pressed="false" style="display:inline-flex;background:transparent;border:1px solid rgba(255,255,255,.16);border-radius:10px;padding:10px;cursor:pointer;color:#C4D0D0"><span data-sound-icon><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 9v6h4l5 4V5L8 9H4z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M16 9l5 6M21 9l-5 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span></button>
+          <button aria-label="Abrir menú" aria-expanded="false" data-action="menu-open" style="display:inline-flex;flex-direction:column;gap:5px;background:transparent;border:1px solid rgba(255,255,255,.16);border-radius:10px;padding:11px;cursor:pointer">
+            <span style="width:20px;height:2px;background:#ECF3F2;border-radius:2px;display:block"></span>
+            <span style="width:20px;height:2px;background:#ECF3F2;border-radius:2px;display:block"></span>
+            <span style="width:14px;height:2px;background:#25E0D0;border-radius:2px;display:block"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============================ MOBILE OVERLAY ============================ -->
+  <div class="scif scif-overlay">
+    <div style="position:fixed;inset:0;z-index:100;background:#0B1012;display:flex;flex-direction:column;animation:pf-rise .3s ease">
+      <div style="height:74px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(20px,5vw,56px);border-bottom:1px solid rgba(255,255,255,.08)">
+        <span style="font-family:'Archivo',sans-serif;font-weight:800;font-size:20px">TechCam<span style="display:inline-flex;gap:2px;margin-left:3px"><span style="width:5px;height:5px;border-radius:50%;background:#25E0D0;display:inline-block"></span><span style="width:5px;height:5px;border-radius:50%;background:#FFD23F;display:inline-block"></span><span style="width:5px;height:5px;border-radius:50%;background:#C65D3B;display:inline-block"></span></span></span>
+        <button aria-label="Cerrar menú" data-action="menu-close" style="background:transparent;border:1px solid rgba(255,255,255,.16);border-radius:10px;padding:11px;cursor:pointer;color:#ECF3F2"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="#ECF3F2" stroke-width="2" stroke-linecap="round"/></svg></button>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:6px;padding:0 clamp(24px,7vw,56px)">
+        <a href="#servicios" data-action="menu-close" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:clamp(28px,8vw,40px);letter-spacing:-.02em;color:#ECF3F2;text-decoration:none;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.07)"><span style="font-family:'Space Mono',monospace;font-size:13px;color:#25E0D0;vertical-align:super;margin-right:12px">01</span>Servicios</a>
+        <a href="#manifiesto" data-action="menu-close" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:clamp(28px,8vw,40px);letter-spacing:-.02em;color:#ECF3F2;text-decoration:none;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.07)"><span style="font-family:'Space Mono',monospace;font-size:13px;color:#FFD23F;vertical-align:super;margin-right:12px">02</span>La marca</a>
+        <a href="#contacto" data-action="menu-close" style="font-family:'Archivo',sans-serif;font-weight:700;font-size:clamp(28px,8vw,40px);letter-spacing:-.02em;color:#ECF3F2;text-decoration:none;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.07)"><span style="font-family:'Space Mono',monospace;font-size:13px;color:#C65D3B;vertical-align:super;margin-right:12px">03</span>Contacto</a>
+      </div>
+      <div style="padding:24px clamp(24px,7vw,56px) 36px">
+        <a href="#contacto" data-wa target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:9px;background:#FF9D2E;color:#1A1206;font-weight:700;font-size:16px;padding:16px;border-radius:12px;text-decoration:none">WhatsApp · Pedir presupuesto</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================ HERO — LA CASA VIVA ============================ -->
+  <header id="top" style="position:relative;min-height:100svh;display:flex;flex-direction:column;align-items:center;padding:84px clamp(18px,4vw,48px) 24px;overflow:hidden">
+    <!-- atmosphere -->
+    <div data-depth="0.15" style="position:absolute;top:-12%;left:50%;transform:translateX(-50%);width:120vw;height:70vh;background:radial-gradient(60% 60% at 50% 0%,rgba(37,224,208,.07),transparent 70%);pointer-events:none;z-index:0"></div>
+    <div style="position:absolute;inset:0;background:radial-gradient(140% 90% at 50% 120%,rgba(255,157,46,.05),transparent 55%);pointer-events:none;z-index:0"></div>
+    <div style="position:absolute;left:0;right:0;bottom:0;height:240px;background:linear-gradient(180deg,rgba(11,16,18,0),#0B1012);pointer-events:none;z-index:3"></div>
+
+    <!-- lockup -->
+    <div style="position:relative;z-index:4;text-align:center;max-width:760px;margin:0 auto">
+      <div data-reveal style="opacity:0;display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.03);border-radius:100px;padding:7px 15px;margin-bottom:16px;white-space:nowrap">
+        <span style="width:7px;height:7px;border-radius:50%;background:#25E0D0;animation:pf-pulse 2.4s infinite"></span>
+        <span style="font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:#9FB0B1;white-space:nowrap">La casa viva · CABA &amp; GBA</span>
+      </div>
+      <h1 data-reveal data-reveal-delay="70" style="opacity:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(38px,6.2vw,68px);line-height:.95;letter-spacing:-.035em;margin:0 0 13px;color:#F4F8F7">
+        TechCam <span style="position:relative;white-space:nowrap">Hogar<svg width="100%" height="14" viewBox="0 0 200 14" preserveAspectRatio="none" style="position:absolute;left:0;bottom:-4px;width:100%;height:12px" aria-hidden="true"><path d="M2 9c34-7 70-7 104-3 30 3 64 5 92 1" stroke="url(#pf-underline)" stroke-width="3.4" fill="none" stroke-linecap="round" opacity=".85"/><defs><linearGradient id="pf-underline" x1="0" x2="1"><stop offset="0" stop-color="#25E0D0"/><stop offset=".5" stop-color="#FFD23F"/><stop offset="1" stop-color="#C65D3B"/></linearGradient></defs></svg></span>
+      </h1>
+      <p data-reveal data-reveal-delay="140" style="opacity:0;font-size:clamp(15px,2vw,18px);line-height:1.5;color:#A6B5B5;max-width:512px;margin:0 auto 14px">
+        Un solo equipo de confianza para toda tu casa. <span style="color:#D7E0E0">Aire, electricidad y refacciones</span> — bajo una misma marca.
+      </p>
+      <div data-reveal data-reveal-delay="210" style="opacity:0;display:flex;align-items:center;justify-content:center;gap:8px;font-family:'Space Mono',monospace;font-size:11.5px;letter-spacing:.08em;color:#6E8081">
+        <span class="hint-d" style="display:inline-flex;align-items:center;gap:8px">Presioná en una habitación para más información del servicio</span>
+      </div>
+    </div>
+
+    <!-- THE HOUSE -->
+    <div class="scif scif-house">
+      <div data-house-wrap style="position:relative;z-index:2;width:100%;max-width:1200px;margin:clamp(2px,1vh,12px) auto 0;flex:1;display:flex;align-items:center;justify-content:center">
+        <div data-house-inner style="position:relative;width:100%">
+          <div id="pf-scene" style="position:relative;width:100%;border-radius:12px;overflow:hidden;box-shadow:0 40px 90px -44px rgba(0,0,0,.95)">
+            <img src="assets/casa-hogar.png" alt="Casa TechCam en corte, de noche: living con aire acondicionado, sala iluminada, tablero eléctrico y taller en obra, junto al cartel TECHCAM" style="display:block;width:100%;height:auto"/>
+
+            <!-- STARS -->
+            <div aria-hidden="true" style="position:absolute;inset:0;z-index:1;pointer-events:none">
+              <span class="star" style="position:absolute;left:11%;top:21%;width:6px;height:6px;border-radius:50%;background:#bfefff;box-shadow:0 0 7px #8fdcff"></span>
+              <span class="star hue" style="position:absolute;left:31%;top:7%;width:7px;height:7px;border-radius:50%;background:#25E0D0;box-shadow:0 0 9px #25E0D0;animation-delay:.6s"></span>
+              <span class="star" style="position:absolute;left:46%;top:5%;width:5px;height:5px;border-radius:50%;background:#FFD23F;box-shadow:0 0 7px #FFD23F;animation-delay:1.2s"></span>
+              <span class="star hue" style="position:absolute;left:63%;top:13%;width:6px;height:6px;border-radius:50%;background:#C65D3B;box-shadow:0 0 8px #C65D3B;animation-delay:1.8s"></span>
+              <span class="star" style="position:absolute;left:20%;top:11%;width:4px;height:4px;border-radius:50%;background:#eaf6ff;box-shadow:0 0 6px #cfeeff;animation-delay:2.3s"></span>
+              <span class="star" style="position:absolute;left:55%;top:26%;width:5px;height:5px;border-radius:50%;background:#9fe9ff;box-shadow:0 0 7px #7fd6ff;animation-delay:2.9s"></span>
+              <span class="star hue" style="position:absolute;left:7%;top:31%;width:5px;height:5px;border-radius:50%;background:#FFD23F;box-shadow:0 0 8px #FFD23F;animation-delay:.3s"></span>
+            </div>
+
+            <!-- soft room illumination -->
+            <div class="room-glow rg-refac" aria-hidden="true" style="left:43.5%;top:56%;width:24%;height:23%;background:radial-gradient(ellipse 62% 70% at 50% 40%,rgba(198,93,59,.5),transparent 66%)"></div>
+
+            <!-- tapar el teclado tipo caja fuerte + tablero eléctrico más chico y prolijo -->
+            <div aria-hidden="true" style="position:absolute;left:31%;top:61.8%;width:8%;height:11%;z-index:1;pointer-events:none;background:radial-gradient(ellipse 56% 54% at 50% 46%,#181f22 0%,#171e21 52%,rgba(20,27,30,0) 80%)"></div>
+            <div aria-hidden="true" style="position:absolute;left:33.9%;top:64.1%;width:3.4%;height:6.3%;z-index:1;pointer-events:none">
+              <svg viewBox="0 0 56 96" preserveAspectRatio="none" style="width:100%;height:100%;display:block">
+                <rect x="5" y="3" width="46" height="90" rx="6" fill="#232c30" stroke="#3c484e" stroke-width="2"/>
+                <rect x="11" y="9" width="34" height="11" rx="2.5" fill="#141b1e"/>
+                <circle cx="40" cy="14.5" r="2.4" fill="#FFD23F"/>
+                <g fill="#aeb7bd">
+                  <rect x="12" y="29" width="14" height="7" rx="2"/>
+                  <rect x="30" y="29" width="14" height="7" rx="2"/>
+                  <rect x="12" y="43" width="14" height="7" rx="2"/>
+                  <rect x="30" y="43" width="14" height="7" rx="2" fill="#FFD23F"/>
+                  <rect x="12" y="57" width="14" height="7" rx="2"/>
+                  <rect x="30" y="57" width="14" height="7" rx="2"/>
+                  <rect x="12" y="71" width="14" height="7" rx="2" fill="#FFD23F"/>
+                  <rect x="30" y="71" width="14" height="7" rx="2"/>
+                </g>
+              </svg>
+            </div>
+
+            <!-- electricidad: enciende su bombilla de techo + la biblioteca (sin tablero) -->
+            <div class="lib-light" aria-hidden="true" style="position:absolute;left:27%;top:56%;width:17%;height:19%;background:radial-gradient(ellipse 55% 60% at 51% 16%,rgba(255,196,108,.5),rgba(255,170,80,.15) 46%,transparent 73%)"></div>
+            <div class="lib-bulb" aria-hidden="true" style="position:absolute;left:32.85%;top:54.7%;width:5.5%;height:8%;background:radial-gradient(circle,rgba(255,232,170,.95),transparent 68%)"></div>
+            <div class="lib-light" aria-hidden="true" style="position:absolute;left:44%;top:35%;width:23%;height:23%;background:radial-gradient(ellipse 55% 62% at 41% 24%,rgba(255,196,108,.5),rgba(255,170,80,.16) 45%,transparent 72%)"></div>
+            <div class="lib-bulb" aria-hidden="true" style="position:absolute;left:51%;top:36.4%;width:5.6%;height:8%;background:radial-gradient(circle,rgba(255,232,170,.95),transparent 68%)"></div>
+
+            <!-- aire: gotas frías saliendo del split (v1) -->
+            <div class="airflow" aria-hidden="true" style="position:absolute;left:25.8%;top:35.9%;width:19.1%;height:20.9%;z-index:2;pointer-events:none">
+              <span class="mote m-air" style="left:49%;top:30%;width:4px;height:4px;background:#bff6f0;box-shadow:0 0 6px #7fe9df"></span>
+              <span class="mote m-air" style="left:57%;top:31%;width:3px;height:3px;background:#aef3ec;box-shadow:0 0 5px #7fe9df"></span>
+              <span class="mote m-air" style="left:65%;top:30%;width:4px;height:4px;background:#bff6f0;box-shadow:0 0 6px #7fe9df"></span>
+              <span class="mote m-air" style="left:72%;top:31%;width:3px;height:3px;background:#aef3ec;box-shadow:0 0 5px #7fe9df"></span>
+              <span class="mote m-air" style="left:60%;top:32%;width:3px;height:3px;background:#d6fbf6;box-shadow:0 0 5px #7fe9df"></span>
+            </div>
+
+            <!-- refacciones: aserrín/polvo + lámpara de trabajo que se balancea -->
+            <div aria-hidden="true" style="position:absolute;inset:0;z-index:2;pointer-events:none">
+              <span class="mote m-dust" style="left:51%;top:70%;width:4px;height:4px;background:#e7d3ad;box-shadow:0 0 5px #caa46a"></span>
+              <span class="mote m-dust" style="left:55%;top:68%;width:3px;height:3px;background:#dcc69c;box-shadow:0 0 5px #caa46a"></span>
+              <span class="mote m-dust" style="left:58%;top:71%;width:3px;height:3px;background:#e7d3ad;box-shadow:0 0 5px #caa46a"></span>
+              <span class="mote m-dust" style="left:61%;top:69%;width:4px;height:4px;background:#dcc69c;box-shadow:0 0 5px #caa46a"></span>
+              <span class="mote m-dust" style="left:53%;top:72%;width:3px;height:3px;background:#e7d3ad;box-shadow:0 0 5px #caa46a"></span>
+            </div>
+            <div class="rf-lamp" aria-hidden="true" style="position:absolute;left:50%;top:55.5%;width:11%;height:14%;z-index:2;pointer-events:none">
+              <div style="position:absolute;left:50%;bottom:24%;transform:translateX(-50%);width:78%;height:60%;background:radial-gradient(circle,rgba(255,206,120,.6),rgba(255,176,90,.16) 46%,transparent 70%);mix-blend-mode:screen"></div>
+            </div>
+
+            <!-- billboard lamps + logo glow -->
+            <div aria-hidden="true" class="board-lamp" style="position:absolute;left:77.5%;top:33.2%;width:30px;height:24px;background:radial-gradient(circle,rgba(255,236,180,.9),transparent 70%);z-index:3;pointer-events:none;mix-blend-mode:screen"></div>
+            <div aria-hidden="true" class="board-lamp b2" style="position:absolute;left:89%;top:33.2%;width:30px;height:24px;background:radial-gradient(circle,rgba(255,236,180,.9),transparent 70%);z-index:3;pointer-events:none;mix-blend-mode:screen"></div>
+            <div aria-hidden="true" class="logo-glow" style="position:absolute;left:75%;top:37%;width:21%;height:9%;background:radial-gradient(ellipse,rgba(120,230,255,.5),transparent 70%);z-index:3;pointer-events:none;mix-blend-mode:screen"></div>
+
+            <!-- LETRERO de servicio — flota a la IZQUIERDA de la casa, aparece en hover -->
+            <div data-board style="position:absolute;left:1.5%;top:37%;width:20.5%;z-index:6;opacity:0;transform:translateX(-10px);transition:opacity .3s ease,transform .3s ease;pointer-events:none;container-type:inline-size">
+              <div data-board-bg style="background:linear-gradient(180deg,rgba(11,16,18,.96),rgba(8,12,13,.97));border:1px solid rgba(37,224,208,.32);border-radius:4cqw;padding:6cqw 6.5cqw;box-shadow:0 24px 60px -22px rgba(0,0,0,.92);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)">
+                <div data-board-active>
+                  <div style="display:flex;align-items:center;gap:2.5cqw;margin-bottom:2.5cqw"><span data-board-dot style="width:3.4cqw;height:3.4cqw;border-radius:50%;background:#25E0D0;box-shadow:0 0 9px #25E0D0;flex:none"></span><span data-board-kicker style="font-family:'Space Mono',monospace;font-weight:700;font-size:4cqw;letter-spacing:.12em;color:#9fb0b1;text-transform:uppercase">Zona</span></div>
+                  <div data-board-title style="font-family:'Archivo',sans-serif;font-weight:800;font-size:9cqw;letter-spacing:-.02em;color:#fff;line-height:1.04;margin-bottom:2.2cqw;text-wrap:balance">Servicio</div>
+                  <div data-board-sub style="font-family:'Hanken Grotesk',sans-serif;font-size:4.6cqw;color:#c7d6f0;line-height:1.3;margin-bottom:4cqw">—</div>
+                  <div data-board-cta style="display:inline-flex;align-items:center;gap:1.5cqw;font-family:'Archivo',sans-serif;font-weight:800;font-size:5cqw;color:#25E0D0">Presioná la habitación para ingresar →</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- HOTSPOTS (clean, no box) -->
+            <a class="hot z-aire" href="aire/index.html" tabindex="0" aria-label="Aire acondicionado — entrar a la página del servicio" style="position:absolute;left:25.8%;top:35.9%;width:19.1%;height:20.9%;z-index:5"></a>
+            <a class="hot z-elec" href="electricidad/index.html" tabindex="0" aria-label="Electricidad — entrar a la página del servicio" style="position:absolute;left:25.8%;top:57.7%;width:17.2%;height:19%;z-index:5"></a>
+            <a class="hot z-refac" href="refacciones/index.html" tabindex="0" aria-label="Refacciones — entrar a la página del servicio" style="position:absolute;left:45.1%;top:57.7%;width:20.9%;height:19%;z-index:5"></a>
+            <div class="biblio-hot" aria-hidden="true" style="position:absolute;left:45.1%;top:35.9%;width:20.9%;height:20.9%;z-index:5"></div>
+            <a class="board-link" href="https://techcam.com.ar/" target="_blank" rel="noopener" aria-label="Ir al sitio de TechCam — techcam.com.ar" style="position:absolute;left:73.2%;top:34.3%;width:24.2%;height:32.4%;z-index:5;border-radius:6px"></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MOBILE: 3 thematic stacked cards -->
+    <div class="scif scif-cards">
+      <div style="position:relative;z-index:4;width:100%;max-width:440px;margin:26px auto 0;display:flex;flex-direction:column;gap:13px">
+        <a href="aire/index.html" style="text-decoration:none;display:block;border-radius:18px;overflow:hidden;border:1px solid rgba(37,224,208,.3);background:linear-gradient(180deg,rgba(37,224,208,.08),rgba(13,21,23,.6))">
+          <div style="padding:20px 20px;display:flex;align-items:center;gap:16px">
+            <div style="width:54px;height:54px;flex:none;border-radius:14px;background:rgba(37,224,208,.12);display:flex;align-items:center;justify-content:center"><svg width="30" height="30" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="7" rx="2.5" stroke="#25E0D0" stroke-width="1.7"/><path d="M7 16c0 2-1 3-2 4M12 16c0 2 0 3-1 5M17 16c0 2 1 3 2 4" stroke="#25E0D0" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+            <div style="flex:1"><div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#7fe9df;margin-bottom:3px">Zona fría</div><div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:21px;color:#ECF3F2;letter-spacing:-.02em">Aire acondicionado</div><div style="font-size:13px;color:#9FB0B1;margin-top:2px">Frío y calor, instalado prolijo.</div></div>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#25E0D0" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </a>
+        <a href="electricidad/index.html" style="text-decoration:none;display:block;border-radius:18px;overflow:hidden;border:1px solid rgba(255,210,63,.3);background:linear-gradient(180deg,rgba(255,210,63,.08),rgba(20,17,9,.6))">
+          <div style="padding:20px 20px;display:flex;align-items:center;gap:16px">
+            <div style="width:54px;height:54px;flex:none;border-radius:14px;background:rgba(255,210,63,.12);display:flex;align-items:center;justify-content:center"><svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="M13 2L5 14h6l-1 8 8-12h-6l1-8z" stroke="#FFD23F" stroke-width="1.7" stroke-linejoin="round"/></svg></div>
+            <div style="flex:1"><div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#F4DE9C;margin-bottom:3px">Energía</div><div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:21px;color:#ECF3F2;letter-spacing:-.02em">Electricidad</div><div style="font-size:13px;color:#9FB0B1;margin-top:2px">Instalaciones seguras y al día.</div></div>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#FFD23F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </a>
+        <a href="refacciones/index.html" style="text-decoration:none;display:block;border-radius:18px;overflow:hidden;border:1px solid rgba(198,93,59,.32);background:linear-gradient(180deg,rgba(198,93,59,.08),rgba(22,15,11,.6))">
+          <div style="padding:20px 20px;display:flex;align-items:center;gap:16px">
+            <div style="width:54px;height:54px;flex:none;border-radius:14px;background:rgba(198,93,59,.14);display:flex;align-items:center;justify-content:center"><svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="M14 4l6 6-9 9-6 1 1-6 8-8z" stroke="#C65D3B" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 6l6 6" stroke="#C65D3B" stroke-width="1.7"/></svg></div>
+            <div style="flex:1"><div style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#E8B9A6;margin-bottom:3px">En obra</div><div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:21px;color:#ECF3F2;letter-spacing:-.02em">Refacciones</div><div style="font-size:13px;color:#9FB0B1;margin-top:2px">Una cuadrilla para toda la obra.</div></div>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#C65D3B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- shortcut + scroll cue -->
+    <div style="position:relative;z-index:4;display:flex;flex-direction:column;align-items:center;gap:18px;margin-top:18px">
+      <a href="#servicios" style="display:inline-flex;align-items:center;gap:9px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.03);color:#D7E0E0;font-weight:600;font-size:14px;padding:12px 20px;border-radius:100px;text-decoration:none;transition:border-color .2s,background .2s" data-hov-in='{"borderColor": "rgba(255,255,255,.36)", "background": "rgba(255,255,255,.06)"}' data-hov-out='{"borderColor": "rgba(255,255,255,.16)", "background": "rgba(255,255,255,.03)"}'>
+        Ver los 3 servicios
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M6 13l6 6 6-6" stroke="#D7E0E0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <div class="scif scif-house">
+        <span style="width:22px;height:34px;border:1.5px solid rgba(255,255,255,.2);border-radius:12px;display:flex;justify-content:center;padding-top:7px"><span style="width:3px;height:7px;border-radius:2px;background:#9FB0B1;animation:pf-scrolldot 1.8s infinite"></span></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============================ MANIFIESTO ============================ -->
+  <section id="manifiesto" style="position:relative;background:#0B1012;padding:clamp(80px,11vw,150px) clamp(20px,5vw,56px);overflow:hidden">
+    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:70vw;height:70vw;max-width:680px;max-height:680px;background:radial-gradient(circle,rgba(255,157,46,.05),transparent 62%);pointer-events:none"></div>
+    <div style="max-width:980px;margin:0 auto;position:relative">
+      <div data-reveal style="opacity:0;display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:24px">
+        <span style="font-family:'Space Mono',monospace;font-size:13px;letter-spacing:.18em;color:#8FA0A1">00</span>
+        <span style="width:40px;height:1px;background:rgba(255,255,255,.2)"></span>
+        <span style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:#8FA0A1">El manifiesto</span>
+      </div>
+      <h2 data-reveal data-reveal-delay="70" style="opacity:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(26px,4.2vw,48px);line-height:1.18;letter-spacing:-.025em;margin:0 auto;max-width:22ch;text-align:center;text-wrap:balance;color:#F2F8F7">
+        Tu casa no entiende de rubros. <span style="color:#8FA0A1">Cuando algo falla, querés a alguien de confianza que lo resuelva.</span> Por eso reunimos el <span style="color:#25E0D0">aire</span>, la <span style="color:#FFD23F">electricidad</span> y las <span style="color:#C65D3B">refacciones</span> bajo un mismo techo.
+      </h2>
+      <div data-reveal data-reveal-delay="140" style="opacity:0;margin-top:40px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:18px">
+        <div style="border-top:1px solid rgba(255,255,255,.1);padding-top:18px"><div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:18px;margin-bottom:6px">Un solo interlocutor</div><p style="margin:0;font-size:14.5px;color:#9FB0B1;line-height:1.6">Coordinás todo con un mismo equipo. Sin gremios sueltos ni excusas cruzadas.</p></div>
+        <div style="border-top:1px solid rgba(255,255,255,.1);padding-top:18px"><div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:18px;margin-bottom:6px">Mismo estándar</div><p style="margin:0;font-size:14.5px;color:#9FB0B1;line-height:1.6">Trabajo prolijo, presupuesto claro y respuesta en 24 horas, sea cual sea el servicio.</p></div>
+        <div style="border-top:1px solid rgba(255,255,255,.1);padding-top:18px"><div style="font-family:'Archivo',sans-serif;font-weight:700;font-size:18px;margin-bottom:6px">Cerca tuyo</div><p style="margin:0;font-size:14.5px;color:#9FB0B1;line-height:1.6">En toda la Ciudad y el Gran Buenos Aires, con la misma cuadrilla de confianza.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ TRUST / COUNTERS ============================ -->
+  <section style="background:#0E1517;border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06);padding:clamp(48px,6vw,74px) clamp(20px,5vw,56px)">
+    <div style="max-width:1180px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:30px">
+      <div data-reveal data-reveal-delay="0" style="opacity:0;text-align:center">
+        <div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(38px,5.6vw,60px);letter-spacing:-.03em;line-height:1;background:linear-gradient(90deg,#25E0D0,#7fe9df);-webkit-background-clip:text;background-clip:text;color:transparent"><span data-counter data-target="12" data-suffix="+">12+</span></div>
+        <div style="font-size:14px;color:#8FA0A1;margin-top:8px">años de oficio</div>
+      </div>
+      <div data-reveal data-reveal-delay="80" style="opacity:0;text-align:center">
+        <div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(38px,5.6vw,60px);letter-spacing:-.03em;line-height:1;background:linear-gradient(90deg,#FFD23F,#ffe48a);-webkit-background-clip:text;background-clip:text;color:transparent"><span data-counter data-target="1500" data-suffix="+">1500+</span></div>
+        <div style="font-size:14px;color:#8FA0A1;margin-top:8px">trabajos realizados</div>
+      </div>
+      <div data-reveal data-reveal-delay="160" style="opacity:0;text-align:center">
+        <div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(38px,5.6vw,60px);letter-spacing:-.03em;line-height:1;background:linear-gradient(90deg,#C65D3B,#e0876a);-webkit-background-clip:text;background-clip:text;color:transparent"><span data-counter data-target="40" data-suffix="+">40+</span></div>
+        <div style="font-size:14px;color:#8FA0A1;margin-top:8px">zonas de CABA y GBA</div>
+      </div>
+      <div data-reveal data-reveal-delay="240" style="opacity:0;text-align:center">
+        <div style="font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(38px,5.6vw,60px);letter-spacing:-.03em;line-height:1;color:#ECF3F2"><span data-counter data-target="3" data-suffix="">3</span></div>
+        <div style="font-size:14px;color:#8FA0A1;margin-top:8px">servicios, un solo equipo</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ SERVICIOS (cards / fallback) ============================ -->
+  <section id="servicios" style="background:#EEEBE3;color:#0C1416;padding:clamp(72px,10vw,130px) clamp(20px,5vw,56px)">
+    <div style="max-width:1240px;margin:0 auto">
+      <div data-reveal style="opacity:0;display:flex;align-items:center;gap:14px;margin-bottom:18px">
+        <span style="font-family:'Space Mono',monospace;font-size:13px;letter-spacing:.18em;color:#0FB9AC">01</span>
+        <span style="width:34px;height:1px;background:#0C1416;opacity:.25"></span>
+        <span style="font-family:'Space Mono',monospace;font-size:12.5px;letter-spacing:.22em;text-transform:uppercase;color:#5C6A6B">Los tres servicios</span>
+      </div>
+      <h2 data-reveal data-reveal-delay="60" style="opacity:0;font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(30px,5vw,54px);line-height:1.02;letter-spacing:-.03em;margin:0 0 14px;max-width:720px;text-wrap:balance">Elegí por dónde entrar.</h2>
+      <p data-reveal data-reveal-delay="120" style="opacity:0;font-size:clamp(15px,2vw,18px);color:#54625F;max-width:540px;margin:0 0 50px;line-height:1.6">Cada servicio tiene su propia página, con cotizador, trabajos reales y cobertura. La misma marca, el mismo estándar.</p>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:18px">
+        <!-- AIRE -->
+        <a href="aire/index.html" data-reveal data-reveal-delay="0" style="opacity:0;text-decoration:none;color:inherit;display:flex;flex-direction:column;background:#fff;border:1px solid rgba(11,16,18,.08);border-radius:20px;overflow:hidden;transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease" data-hov-in='{"transform": "translateY(-7px)", "boxShadow": "0 30px 60px -28px rgba(37,224,208,.55)", "borderColor": "rgba(37,224,208,.5)"}' data-hov-out='{"transform": "", "boxShadow": "", "borderColor": "rgba(11,16,18,.08)"}'>
+          <div style="height:8px;background:#25E0D0"></div>
+          <div style="padding:30px 28px;display:flex;flex-direction:column;flex:1">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px"><div style="width:54px;height:54px;border-radius:15px;background:#06292a;display:flex;align-items:center;justify-content:center"><svg width="30" height="30" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="7" rx="2.5" stroke="#25E0D0" stroke-width="1.7"/><path d="M7 16c0 2-1 3-2 4M12 16c0 2 0 3-1 5M17 16c0 2 1 3 2 4" stroke="#25E0D0" stroke-width="1.7" stroke-linecap="round"/></svg></div><span style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.12em;color:#0FB9AC">01</span></div>
+            <h3 style="font-family:'Archivo',sans-serif;font-weight:800;font-size:24px;letter-spacing:-.02em;margin:0 0 9px">Aire acondicionado</h3>
+            <p style="font-size:14.5px;line-height:1.55;color:#5C6A6B;margin:0 0 22px;flex:1">Instalación y service de split y multisplit. Frío en verano, calor en invierno, prolijo y eficiente.</p>
+            <span style="display:inline-flex;align-items:center;gap:8px;color:#0C8d83;font-weight:700;font-size:15px">Ingresar <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#0C8d83" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </div>
+        </a>
+        <!-- ELECTRICIDAD -->
+        <a href="electricidad/index.html" data-reveal data-reveal-delay="100" style="opacity:0;text-decoration:none;color:inherit;display:flex;flex-direction:column;background:#fff;border:1px solid rgba(11,16,18,.08);border-radius:20px;overflow:hidden;transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease" data-hov-in='{"transform": "translateY(-7px)", "boxShadow": "0 30px 60px -28px rgba(212,160,20,.5)", "borderColor": "rgba(255,210,63,.6)"}' data-hov-out='{"transform": "", "boxShadow": "", "borderColor": "rgba(11,16,18,.08)"}'>
+          <div style="height:8px;background:#FFD23F"></div>
+          <div style="padding:30px 28px;display:flex;flex-direction:column;flex:1">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px"><div style="width:54px;height:54px;border-radius:15px;background:#2a2410;display:flex;align-items:center;justify-content:center"><svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="M13 2L5 14h6l-1 8 8-12h-6l1-8z" stroke="#FFD23F" stroke-width="1.7" stroke-linejoin="round"/></svg></div><span style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.12em;color:#B8901C">02</span></div>
+            <h3 style="font-family:'Archivo',sans-serif;font-weight:800;font-size:24px;letter-spacing:-.02em;margin:0 0 9px">Electricidad</h3>
+            <p style="font-size:14.5px;line-height:1.55;color:#5C6A6B;margin:0 0 22px;flex:1">Tableros, cableado y circuitos nuevos para casas y comercios. Instalaciones seguras y al día.</p>
+            <span style="display:inline-flex;align-items:center;gap:8px;color:#9A7611;font-weight:700;font-size:15px">Ingresar <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#9A7611" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </div>
+        </a>
+        <!-- REFACCIONES -->
+        <a href="refacciones/index.html" data-reveal data-reveal-delay="200" style="opacity:0;text-decoration:none;color:inherit;display:flex;flex-direction:column;background:#fff;border:1px solid rgba(11,16,18,.08);border-radius:20px;overflow:hidden;transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease" data-hov-in='{"transform": "translateY(-7px)", "boxShadow": "0 30px 60px -28px rgba(198,93,59,.5)", "borderColor": "rgba(198,93,59,.6)"}' data-hov-out='{"transform": "", "boxShadow": "", "borderColor": "rgba(11,16,18,.08)"}'>
+          <div style="height:8px;background:#C65D3B"></div>
+          <div style="padding:30px 28px;display:flex;flex-direction:column;flex:1">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px"><div style="width:54px;height:54px;border-radius:15px;background:#2a1810;display:flex;align-items:center;justify-content:center"><svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="M14 4l6 6-9 9-6 1 1-6 8-8z" stroke="#C65D3B" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 6l6 6" stroke="#C65D3B" stroke-width="1.7"/></svg></div><span style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.12em;color:#9E4427">03</span></div>
+            <h3 style="font-family:'Archivo',sans-serif;font-weight:800;font-size:24px;letter-spacing:-.02em;margin:0 0 9px">Refacciones</h3>
+            <p style="font-size:14.5px;line-height:1.55;color:#5C6A6B;margin:0 0 22px;flex:1">Pintura, albañilería, durlock, pisos y plomería. Una sola cuadrilla para toda la obra, de principio a fin.</p>
+            <span style="display:inline-flex;align-items:center;gap:8px;color:#9E4427;font-weight:700;font-size:15px">Ingresar <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#9E4427" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ FOOTER / CONTACTO ============================ -->
+  <footer id="contacto" style="background:#080C0D;border-top:1px solid rgba(255,255,255,.06);padding:clamp(60px,8vw,96px) clamp(20px,5vw,56px) 40px">
+    <div style="max-width:1240px;margin:0 auto">
+      <div data-reveal style="opacity:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:42px;padding-bottom:46px;border-bottom:1px solid rgba(255,255,255,.07)">
+        <div>
+          <div style="display:flex;align-items:center;gap:11px;margin-bottom:16px">
+            <svg width="28" height="28" viewBox="0 0 32 32" fill="none"><rect x="1.4" y="1.4" width="29.2" height="29.2" rx="8.5" stroke="#3A4748" stroke-width="1.5"/><path d="M7.5 11.5h17M7.5 16h17M7.5 20.5h11" stroke="#ECF3F2" stroke-width="2" stroke-linecap="round"/><circle cx="22.5" cy="20.5" r="2.3" fill="#25E0D0"/></svg>
+            <span style="font-family:'Archivo',sans-serif;font-weight:800;font-size:20px">TechCam<span style="display:inline-flex;gap:2px;margin-left:3px"><span style="width:5px;height:5px;border-radius:50%;background:#25E0D0;display:inline-block"></span><span style="width:5px;height:5px;border-radius:50%;background:#FFD23F;display:inline-block"></span><span style="width:5px;height:5px;border-radius:50%;background:#C65D3B;display:inline-block"></span></span> <span style="font-weight:500;color:#8FA0A1;font-size:12px;letter-spacing:.16em;text-transform:uppercase">Hogar</span></span>
+          </div>
+          <p style="font-size:14px;color:#7E9091;line-height:1.6;margin:0;max-width:300px">Un solo equipo de confianza para toda tu casa. Aire, electricidad y refacciones en CABA y Gran Buenos Aires.</p>
+        </div>
+        <div>
+          <h4 style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#5b6a6b;margin:0 0 16px;font-weight:400">Servicios</h4>
+          <div style="display:flex;flex-direction:column;gap:11px;font-size:14.5px">
+            <a href="aire/index.html" style="color:#C4D0D0;text-decoration:none;transition:color .2s;display:flex;align-items:center;gap:9px" data-hov-in='{"color": "#25E0D0"}' data-hov-out='{"color": "#C4D0D0"}'><span style="width:7px;height:7px;border-radius:50%;background:#25E0D0"></span>Aire acondicionado</a>
+            <a href="electricidad/index.html" style="color:#C4D0D0;text-decoration:none;transition:color .2s;display:flex;align-items:center;gap:9px" data-hov-in='{"color": "#FFD23F"}' data-hov-out='{"color": "#C4D0D0"}'><span style="width:7px;height:7px;border-radius:50%;background:#FFD23F"></span>Electricidad</a>
+            <a href="refacciones/index.html" style="color:#C4D0D0;text-decoration:none;transition:color .2s;display:flex;align-items:center;gap:9px" data-hov-in='{"color": "#C65D3B"}' data-hov-out='{"color": "#C4D0D0"}'><span style="width:7px;height:7px;border-radius:50%;background:#C65D3B"></span>Refacciones</a>
+          </div>
+        </div>
+        <div>
+          <h4 style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#5b6a6b;margin:0 0 16px;font-weight:400">Contacto</h4>
+          <div style="display:flex;flex-direction:column;gap:11px;font-size:14.5px">
+            <a href="#contacto" data-wa target="_blank" rel="noopener" style="color:#C4D0D0;text-decoration:none;transition:color .2s;display:flex;align-items:center;gap:9px" data-hov-in='{"color": "#25E0D0"}' data-hov-out='{"color": "#C4D0D0"}'><svg width="16" height="16" viewBox="0 0 24 24" fill="#9FB0B1"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.9c0 1.76.46 3.45 1.34 4.95L2 22l5.3-1.39c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2z"/></svg>WhatsApp general</a>
+            <span style="color:#5b6a6b;font-size:13px;display:flex;align-items:center;gap:9px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="#43504f" stroke-width="1.5"/><path d="M4 7l8 5 8-5" stroke="#43504f" stroke-width="1.5"/></svg>info@techcam.com.ar</span>
+          </div>
+        </div>
+        <div>
+          <h4 style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#5b6a6b;margin:0 0 16px;font-weight:400">Zona</h4>
+          <p style="font-size:14.5px;color:#C4D0D0;line-height:1.6;margin:0">CABA y Gran Buenos Aires<br><span style="color:#7E9091">Lun a Sáb · 8 a 20 h</span></p>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding-top:26px">
+        <p style="font-size:13px;color:#5b6a6b;margin:0">© 2026 TechCam Hogar. Todos los derechos reservados.</p>
+        
+      </div>
+    </div>
+  </footer>
+
+  <!-- floating whatsapp -->
+  <div class="scif scif-bubble">
+    <a href="#contacto" data-wa target="_blank" rel="noopener" aria-label="Escribir por WhatsApp" style="position:fixed;right:24px;bottom:24px;z-index:80;width:60px;height:60px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;box-shadow:0 14px 34px -8px rgba(37,211,102,.7);transition:transform .25s" data-hov-in='{"transform": "scale(1.08)"}' data-hov-out='{"transform": ""}'>
+      <span style="position:absolute;inset:0;border-radius:50%;border:2px solid #25D366;animation:pf-pulse 2.2s infinite;opacity:.5"></span>
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="#fff"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.9c0 1.76.46 3.45 1.34 4.95L2 22l5.3-1.39c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2zm5.8 14.04c-.24.68-1.42 1.31-1.95 1.36-.5.05-1.13.07-1.83-.11-.42-.13-.96-.31-1.66-.61-2.92-1.26-4.83-4.2-4.98-4.39-.15-.2-1.19-1.58-1.19-3.01 0-1.43.75-2.13 1.02-2.42.27-.29.58-.36.78-.36.2 0 .39 0 .56.01.18.01.42-.07.66.5.24.58.82 2.01.89 2.16.07.14.12.31.02.51-.1.2-.15.31-.29.48-.15.17-.31.39-.44.52-.15.15-.3.31-.13.6.17.29.76 1.25 1.63 2.03 1.12 1 2.06 1.31 2.35 1.46.29.15.46.13.63-.08.17-.2.73-.85.92-1.14.2-.29.39-.24.66-.15.27.1 1.7.8 1.99.95.29.15.49.22.56.34.07.12.07.7-.17 1.38z"/></svg>
+    </a>
+  </div>
+
+</div>
+<script src="app.js" defer></script>
+</body>
+</html>
